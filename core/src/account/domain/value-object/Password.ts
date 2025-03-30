@@ -1,74 +1,60 @@
-import {compare, hash} from 'bcrypt'
+import * as bcrypt from 'bcrypt'
 
-import {ValueObject} from '@core/shared'
+export class InvalidPasswordError extends Error {}
 
-export class InvalidPasswordError extends Error {
-    constructor(message?: string) {
-        super(message)
-        this.name = 'InvalidPasswordError'
-    }
-}
+export class Password {
+    private static readonly MIN_LENGTH = 12
+    private static readonly MAX_LENGTH = 64
+    private static readonly SALT_ROUNDS = 10
 
-export class Password extends ValueObject<string> {
-    private static readonly MIN_LENGTH = 8
+    private constructor(private readonly password: string) {}
 
-    private static readonly MUST_BE_A_DEFINED_STRING =
-        'Password must be a defined string'
+    public static async create(password: string): Promise<Password> {
+        Password.validate(password)
 
-    private static readonly MUST_BE_AT_LEAST_X_CHARACTERS = `Password must have at least ${Password.MIN_LENGTH} characters`
+        const hashedPassword = await bcrypt.hash(
+            password,
+            Password.SALT_ROUNDS
+        )
 
-    private static readonly MUST_BE_VALID_FORMAT =
-        'Password must be at least 1 uppercase, 1 lowercase, 1 number and 1 special character'
-
-    private readonly SALT = 10
-
-    constructor(value: string) {
-        Password.validate(value)
-
-        super(value)
-    }
-
-    private static validate(value: string): void {
-        const mustBeDefinedString = (value: string) =>
-            value !== undefined && value !== null && typeof value === 'string'
-
-        if (!mustBeDefinedString(value)) {
-            throw new InvalidPasswordError(this.MUST_BE_A_DEFINED_STRING)
-        }
-
-        const passwordMustBeAtLeastXCharacters = (value: string) =>
-            value.length >= this.MIN_LENGTH
-
-        if (!passwordMustBeAtLeastXCharacters(value)) {
-            throw new InvalidPasswordError(this.MUST_BE_AT_LEAST_X_CHARACTERS)
-        }
-
-        const passwordMustBeValidFormat = (value: string) => {
-            const hasUpperCase = /[A-Z]/.test(value)
-            const hasLowerCase = /[a-z]/.test(value)
-            const hasNumbers = /\d/.test(value)
-            const hasSpecialCharacters = /[!@#$%^&*()_+{}\\[\]:;<>,.?~]/.test(
-                value
-            )
-
-            return (
-                hasUpperCase &&
-                hasLowerCase &&
-                hasNumbers &&
-                hasSpecialCharacters
-            )
-        }
-
-        if (!passwordMustBeValidFormat(value)) {
-            throw new InvalidPasswordError(this.MUST_BE_VALID_FORMAT)
-        }
-    }
-
-    public async hash(): Promise<void> {
-        this.value = await hash(this.value, this.SALT)
+        return new Password(hashedPassword)
     }
 
     public async compare(plainTextPassword: string): Promise<boolean> {
-        return await compare(plainTextPassword, this.value)
+        return await bcrypt.compare(plainTextPassword, this.password)
+    }
+
+    private static validate(value: string): void {
+        if (
+            !Password.mustBeDefinedString(value) ||
+            !Password.passwordMustBeAtLeastXCharacters(value) ||
+            !Password.passwordMustBeAtMostXCharacters(value) ||
+            !Password.passwordMustBeValidFormat(value)
+        ) {
+            throw new InvalidPasswordError()
+        }
+    }
+
+    private static mustBeDefinedString(value: string): boolean {
+        return (
+            value !== undefined && value !== null && typeof value === 'string'
+        )
+    }
+
+    private static passwordMustBeAtLeastXCharacters(value: string): boolean {
+        return value.length >= Password.MIN_LENGTH
+    }
+
+    private static passwordMustBeAtMostXCharacters(value: string): boolean {
+        return value.length <= Password.MAX_LENGTH
+    }
+
+    private static passwordMustBeValidFormat(value: string): boolean {
+        return (
+            /[A-Z]/.test(value) &&
+            /[a-z]/.test(value) &&
+            /\d/.test(value) &&
+            /[!@#$%^&*()_+{}\\[\]:;<>,.?~]/.test(value)
+        )
     }
 }
