@@ -1,4 +1,6 @@
-export default {
+import type {Config} from 'jest'
+
+const config: Config = {
     moduleNameMapper: {
         '@core/(.*)$': '<rootDir>/src/$1',
     },
@@ -7,3 +9,5 @@ export default {
         '^.+\\.tsx?$': ['ts-jest', {useESM: true}],
     },
 }
+
+export default config
