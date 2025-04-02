@@ -3,8 +3,8 @@ import type {Config} from 'jest'
 const config: Config = {
     preset: 'ts-jest',
     projects: [
-        '<rootDir>/app/*/jest.config.ts',
-        '<rootDir>/core/*/jest.config.ts',
+        '<rootDir>/app/jest.config.ts',
+        '<rootDir>/core/jest.config.ts',
     ],
     testEnvironment: 'node',
     moduleFileExtensions: ['ts', 'js', 'json'],
