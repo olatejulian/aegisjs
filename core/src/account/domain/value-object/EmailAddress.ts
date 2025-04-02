@@ -1,27 +1,29 @@
-import {ValueObject} from '@core/shared'
 import validator from 'validator'
 
-export class InvalidEmailAddressError extends Error {
-    constructor(message?: string) {
-        super(message)
+export class InvalidEmailAddressError extends Error {}
 
-        this.name = 'InvalidEmailAddressError'
+export class EmailAddress {
+    private constructor(private readonly emailAddress: string) {}
+
+    public static create(emailAddress: string): EmailAddress {
+        EmailAddress.validate(emailAddress)
+
+        return new EmailAddress(emailAddress)
     }
-}
 
-export class EmailAddress extends ValueObject<string> {
-    private static readonly EMAIL_IS_INVALID = (email: string) =>
-        `${email} is invalid email address`
+    public equals(other: EmailAddress): boolean {
+        return this.toString() === other?.toString()
+    }
 
-    constructor(value: string) {
-        EmailAddress.validate(value)
-
-        super(value)
+    public toString(): string {
+        return this.emailAddress
     }
 
     private static validate(value: string): void {
-        if (!validator.isEmail(value)) {
-            throw new InvalidEmailAddressError(this.EMAIL_IS_INVALID(value))
+        const isEmailValid = validator.isEmail(value)
+
+        if (!isEmailValid) {
+            throw new InvalidEmailAddressError()
         }
     }
 }
