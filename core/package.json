@@ -6,7 +6,8 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
-    "@types/uuid": "^10.0.0"
+    "@types/uuid": "^10.0.0",
+    "@types/validator": "^13.12.3"
   },
   "exports": {
     "import": "./lib/index.js",
