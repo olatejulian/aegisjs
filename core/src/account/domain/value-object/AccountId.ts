@@ -1,30 +1,35 @@
-import {ValueObject} from '@core/shared'
 import {v4 as uuidv4, validate} from 'uuid'
 
-export class InvalidAccountIdError extends Error {
-    constructor(message?: string) {
-        super(message)
-        this.name = 'InvalidAccountIdError'
-    }
-}
+export class InvalidAccountIdError extends Error {}
 
-export class AccountId extends ValueObject<string> {
-    private static readonly MUST_BE_VALID_UUID_STRING =
-        'Account ID Must be a valid UUID string'
+export class AccountId {
+    private constructor(private readonly accountId: string) {}
 
-    constructor(value: string) {
-        AccountId.validate(value)
+    public static generate(): AccountId {
+        const newUniqueIdString = uuidv4().toString()
 
-        super(value)
+        return new AccountId(newUniqueIdString)
     }
 
-    public static generateId(): AccountId {
-        return new AccountId(uuidv4().toString())
+    public static fromString(accountId: string): AccountId {
+        AccountId.validate(accountId)
+
+        return new AccountId(accountId)
+    }
+
+    public toString(): string {
+        return this.accountId
+    }
+
+    public equals(other: AccountId): boolean {
+        return this.toString() === other.toString()
     }
 
     private static validate(value: string): void {
-        if (!validate(value)) {
-            throw new InvalidAccountIdError(this.MUST_BE_VALID_UUID_STRING)
+        const isValid = validate(value)
+
+        if (!isValid) {
+            throw new InvalidAccountIdError()
         }
     }
 }
