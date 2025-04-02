@@ -2,63 +2,52 @@ import {AccountId, InvalidAccountIdError} from '@core/account'
 
 describe('Account Id Unit Tests', () => {
     it('should be able to create a valid account id', () => {
-        // given
-        const validValue = '123e4567-e89b-12d3-a456-426614174000'
+        const AccountIdString = '123e4567-e89b-12d3-a456-426614174000'
 
-        // when
-        const accountId = new AccountId(validValue)
+        const accountId = AccountId.fromString(AccountIdString)
 
-        // then
-        expect(accountId.getValue).toBe(validValue)
+        expect(accountId.toString()).toBe(AccountIdString)
     })
 
     it('should throw an error when trying to create an account id with an empty value', () => {
-        // given
-        const invalidValue = ''
+        const AccountIdString = ''
 
-        // when
-        const createAccountId = () => new AccountId(invalidValue)
-
-        // then
-        expect(createAccountId).toThrow(InvalidAccountIdError)
+        expect(() => AccountId.fromString(AccountIdString)).toThrow(
+            InvalidAccountIdError
+        )
     })
 
     it('should throw an error when trying to create an account id with an invalid value', () => {
-        // given
-        const invalidValue = 'invalid-value'
+        const AccountIdString = 'invalid-value'
 
-        // when
-        const createAccountId = () => new AccountId(invalidValue)
-
-        // then
-        expect(createAccountId).toThrow(InvalidAccountIdError)
+        expect(() => AccountId.fromString(AccountIdString)).toThrow(
+            InvalidAccountIdError
+        )
     })
 
     it('should be able to compare with another account id', () => {
-        // given
-        const validValue = '123e4567-e89b-12d3-a456-426614174000'
-        const accountId = new AccountId(validValue)
-        const anotherAccountId = new AccountId(validValue)
+        const AccountIdString = '123e4567-e89b-12d3-a456-426614174000'
 
-        // when
+        const accountId = AccountId.fromString(AccountIdString)
+
+        const anotherAccountId = AccountId.fromString(AccountIdString)
+
         const areEqual = accountId.equals(anotherAccountId)
 
-        // then
         expect(areEqual).toBe(true)
     })
 
     it('should be able to compare with another account id and return false', () => {
-        // given
-        const validValue = '123e4567-e89b-12d3-a456-426614174000'
-        const accountId = new AccountId(validValue)
-        const anotherAccountId = new AccountId(
+        const AccountIdString = '123e4567-e89b-12d3-a456-426614174000'
+
+        const accountId = AccountId.fromString(AccountIdString)
+
+        const anotherAccountId = AccountId.fromString(
             '123e4567-e89b-12d3-a456-426614174111'
         )
 
-        // when
         const areEqual = accountId.equals(anotherAccountId)
 
-        // then
         expect(areEqual).toBe(false)
     })
 })
