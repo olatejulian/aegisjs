@@ -1,51 +1,53 @@
-import {ValueObject} from '@core/shared'
+export class InvalidAccountNameError extends Error {}
 
-export class InvalidAccountNameError extends Error {
-    constructor(message?: string) {
-        super(message)
-        this.name = 'InvalidAccountNameError'
-    }
-}
-
-export class AccountName extends ValueObject<string> {
+export class AccountName {
     private static readonly MIN_LENGTH = 3
-    private static readonly MAX_LENGTH = 20
+    private static readonly MAX_LENGTH = 50
 
-    private static readonly MUST_BE_A_DEFINED_STRING =
-        'Account name must be a defined string'
-    private static readonly MUST_HAVE_AT_LEAST_X_CHARACTERS = `Account name must have at least ${AccountName.MIN_LENGTH} characters`
-    private static readonly MUST_HAVE_AT_MOST_X_CHARACTERS = `Account name must have at most ${AccountName.MAX_LENGTH} characters`
+    private constructor(private readonly accountName: string) {}
 
-    constructor(value: string) {
-        AccountName.validate(value)
+    public static create(accountName: string): AccountName {
+        const formattedName = AccountName.format(accountName)
 
-        super(value)
+        AccountName.validate(formattedName)
+
+        return new AccountName(formattedName)
     }
 
-    private static validate(value: string): void {
-        const mustBeValid = (value: string) =>
-            value !== null && value !== undefined && typeof value === 'string'
+    public toString(): string {
+        return this.accountName
+    }
 
-        if (!mustBeValid(value)) {
-            throw new InvalidAccountNameError(this.MUST_BE_A_DEFINED_STRING)
+    public equals(other: AccountName): boolean {
+        return this.toString() === other.toString()
+    }
+
+    private static format(name: string): string {
+        return name
+            .trim()
+            .replace(/\s+/g, ' ')
+            .replace(/\b\w/g, char => char.toUpperCase())
+    }
+
+    private static validate(accountName: string): void {
+        if (
+            !AccountName.mustBeValidLength(accountName) ||
+            !AccountName.mustHaveValidCharacters(accountName)
+        ) {
+            throw new InvalidAccountNameError()
         }
+    }
 
-        const mustHaveAtLeastXCharacters = (value: string) =>
-            value.length >= this.MIN_LENGTH
+    private static mustBeValidLength(accountName: string): boolean {
+        return (
+            accountName.length >= this.MIN_LENGTH &&
+            accountName.length <= this.MAX_LENGTH
+        )
+    }
 
-        if (!mustHaveAtLeastXCharacters(value)) {
-            throw new InvalidAccountNameError(
-                this.MUST_HAVE_AT_LEAST_X_CHARACTERS
-            )
-        }
+    private static mustHaveValidCharacters(accountName: string): boolean {
+        const regex = /^(?![-'])([A-Za-zÀ-ÖØ-öø-ÿ' -]+)(?<![-'])$/
 
-        const mustHaveAtMostXCharacters = (value: string) =>
-            value.length <= this.MAX_LENGTH
-
-        if (!mustHaveAtMostXCharacters(value)) {
-            throw new InvalidAccountNameError(
-                this.MUST_HAVE_AT_MOST_X_CHARACTERS
-            )
-        }
+        return regex.test(accountName)
     }
 }
