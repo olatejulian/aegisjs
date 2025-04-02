@@ -1,47 +1,42 @@
 import {AccountName, InvalidAccountNameError} from '@core/account'
 
 describe('AccountName Unit Tests', () => {
-    it('should be able to create a valid account name', () => {
-        // given
-        const validValue = 'John Doe'
+    it('should be able to create a valid account name if the string is valid', () => {
+        const accountNameString = '   John    Doe   '
 
-        // when
-        const accountName = new AccountName(validValue)
+        const formattedAccountNameString = accountNameString
+            .trim()
+            .replace(/\s+/g, ' ')
+            .replace(/\b\w/g, char => char.toUpperCase())
 
-        // then
-        expect(accountName.getValue).toBe(validValue)
+        const accountName = AccountName.create(accountNameString)
+
+        expect(accountName.toString()).toBe(formattedAccountNameString)
     })
 
-    it('should throw an error when trying to create an account name with an empty value', () => {
-        // given
-        const invalidValue = ''
+    it('should throw an error when trying to create an account name with the length less than 3', () => {
+        const accountNameString = 'fo'
 
-        // when
-        const createAccountName = () => new AccountName(invalidValue)
-
-        // then
-        expect(createAccountName).toThrow(InvalidAccountNameError)
+        expect(() => AccountName.create(accountNameString)).toThrow(
+            InvalidAccountNameError
+        )
     })
 
-    it('should throw an error when trying to create an account name with a null value', () => {
-        // given
-        const invalidValue = null
+    it('should throw an error when trying to create an account name with length greater than 50', () => {
+        const accountNameString = 'foo'.repeat(50)
 
-        // when
-        const createAccountName = () => new AccountName(invalidValue)
-
-        // then
-        expect(createAccountName).toThrow(InvalidAccountNameError)
+        expect(() => AccountName.create(accountNameString)).toThrow(
+            InvalidAccountNameError
+        )
     })
 
-    it('should throw an error when trying to create an account name with a value that is too long', () => {
-        // given
-        const invalidValue = 'a'.repeat(51)
+    it('should throw an error when trying to create an account name with invalid characters', () => {
+        const accountNameString = 'Foo@Bar Jr.'
 
-        // when
-        const createAccountName = () => new AccountName(invalidValue)
-
-        // then
-        expect(createAccountName).toThrow(InvalidAccountNameError)
+        expect(() => AccountName.create(accountNameString)).toThrow(
+            InvalidAccountNameError
+        )
     })
+
+    
 })
