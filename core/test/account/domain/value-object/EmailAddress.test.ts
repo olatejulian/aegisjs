@@ -1,29 +1,35 @@
-import {EmailAddress} from '@core/account'
+import {EmailAddress, InvalidEmailAddressError} from '@core/account'
 
 describe('Email Address Unit Tests', () => {
     it('should create a valid email address', () => {
-        // given
         const emailAddressString = 'john.doe@email.com'
 
-        const emailAddress = new EmailAddress(emailAddressString)
+        const emailAddress = EmailAddress.create(emailAddressString)
 
-        // then
-        expect(emailAddress.getValue).toBeDefined()
+        expect(emailAddress.toString()).toBeDefined()
 
-        expect(emailAddress.getValue).toEqual(emailAddressString)
+        expect(emailAddress.toString()).toEqual(emailAddressString)
     })
 
     it('should throw an error when email address is invalid', () => {
-        // given
         const invalidEmailAddress = 'invalid.email.com'
 
-        // when
-        const createInvalidEmailAddress = () =>
-            new EmailAddress(invalidEmailAddress)
-
-        // then
-        expect(createInvalidEmailAddress).toThrow(
-            'invalid.email.com is invalid email address'
+        expect(() => EmailAddress.create(invalidEmailAddress)).toThrow(
+            InvalidEmailAddressError
         )
+    })
+
+    it('should be equal when email addresses are the same', () => {
+        const emailAddressStringA = 'john.doe@email.com'
+
+        const emailAddressA = EmailAddress.create(emailAddressStringA)
+
+        const emailAddressStringB = 'john.doe@email.com'
+
+        const emailAddressB = EmailAddress.create(emailAddressStringB)
+
+        const isTheSameEmail = emailAddressA.equals(emailAddressB)
+
+        expect(isTheSameEmail).toBe(true)
     })
 })
