@@ -1,4 +1,5 @@
 export * from './Account'
+export * from './AccountEmail'
 export * from './AccountFactory'
 export * from './AccountRepository'
 export * from './value-object'
