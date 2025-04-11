@@ -26,6 +26,10 @@ export class Password {
     public async compare(plainTextPassword: string): Promise<boolean> {
         return await this.password.compare(plainTextPassword)
     }
+
+    public equals(other: Password): boolean {
+        return this.password.toString() === other.toString()
+    }
 }
 
 class PlainPassword {
