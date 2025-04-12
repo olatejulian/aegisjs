@@ -1,4 +1,4 @@
-import {Password, PasswordResetToken} from './value-object'
+import {Password, PasswordResetToken} from '../value-object'
 
 export class CannotGenerateResetTokenError extends Error {}
 

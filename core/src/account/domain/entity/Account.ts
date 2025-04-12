@@ -1,5 +1,3 @@
-import {AccountEmail} from './AccountEmail'
-import {AccountPassword} from './AccountPassword'
 import {
     AccountId,
     AccountName,
@@ -7,7 +5,9 @@ import {
     EmailVerificationToken,
     Password,
     PasswordResetToken,
-} from './value-object'
+} from '../value-object'
+import {AccountEmail} from './AccountEmail'
+import {AccountPassword} from './AccountPassword'
 
 export class WrongEmailAddressOrPasswordError extends Error {}
 

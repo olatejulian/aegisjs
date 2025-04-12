@@ -1,4 +1,4 @@
-import {EmailAddress, EmailVerificationToken} from './value-object'
+import {EmailAddress, EmailVerificationToken} from '../value-object'
 
 export class AccountEmailCorruptedStateError extends Error {}
 
