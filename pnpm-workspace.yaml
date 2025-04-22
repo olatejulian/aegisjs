@@ -1,6 +1,6 @@
-packages:
-  - core
-  - app
 onlyBuiltDependencies:
   - '@nestjs/core'
   - '@swc/core'
+
+packages:
+  - 'packages/*'
