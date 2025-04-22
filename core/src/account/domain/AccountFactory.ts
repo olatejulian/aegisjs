@@ -1,26 +1,28 @@
-import {Account} from './Account'
+import {Account, AccountEmail, AccountPassword} from './entity'
 import {AccountName, EmailAddress, Password} from './value-object'
 
 export class AccountFactory {
-    public static create(props: {
+    public static async createAccount(props: {
         name: string
         emailAddress: string
         password: string
-    }): Account {
-        const {name, emailAddress, password} = props
+    }): Promise<Account> {
+        const accountName = AccountName.create(props.name)
 
-        const hashedPassword = (password: string): Password => {
-            const pwd = new Password(password)
+        const emailAddress = EmailAddress.create(props.emailAddress)
 
-            pwd.hash()
+        const password = await Password.fromPlainString(props.password)
 
-            return pwd
-        }
+        const accountEmail = AccountEmail.create(emailAddress)
 
-        return Account.create({
-            name: new AccountName(name),
-            emailAddress: new EmailAddress(emailAddress),
-            password: hashedPassword(password),
-        })
+        const accountPassword = AccountPassword.create(password)
+
+        const account = Account.create(
+            accountName,
+            accountEmail,
+            accountPassword
+        )
+
+        return account
     }
 }
