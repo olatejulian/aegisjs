@@ -1,4 +1,4 @@
-import {Account, AccountEmail, AccountPassword} from './entity'
+import {Account, AccountEmailManager, AccountPasswordManager} from './entity'
 import {AccountName, EmailAddress, Password} from './value-object'
 
 export class AccountFactory {
@@ -7,20 +7,26 @@ export class AccountFactory {
         emailAddress: string
         password: string
     }): Promise<Account> {
-        const accountName = AccountName.create(props.name)
+        const {
+            name: accountNameString,
+            emailAddress: emailAddressString,
+            password: plainPasswordString,
+        } = props
 
-        const emailAddress = EmailAddress.create(props.emailAddress)
+        const accountName = AccountName.create(accountNameString)
 
-        const password = await Password.fromPlainString(props.password)
+        const emailAddress = EmailAddress.create(emailAddressString)
 
-        const accountEmail = AccountEmail.create(emailAddress)
+        const password = await Password.fromPlainString(plainPasswordString)
 
-        const accountPassword = AccountPassword.create(password)
+        const accountEmailManager = AccountEmailManager.create(emailAddress)
+
+        const accountPasswordManager = AccountPasswordManager.create(password)
 
         const account = Account.create(
             accountName,
-            accountEmail,
-            accountPassword
+            accountEmailManager,
+            accountPasswordManager
         )
 
         return account
