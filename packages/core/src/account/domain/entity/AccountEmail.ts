@@ -6,14 +6,14 @@ export class CantVerifyEmailError extends Error {}
 
 export class EmailAlreadyVerifiedError extends Error {}
 
-export type AccountEmailObject = {
+export type AccountEmailManagerObject = {
     emailAddress: EmailAddress
     token: EmailVerificationToken
     tokenExpiresAt: Date
     verifiedAt: Date
 }
 
-export class AccountEmail {
+export class AccountEmailManager {
     private static readonly TOKEN_EXPIRATION_TIME_IN_MS = 1800000
 
     private constructor(
@@ -23,20 +23,27 @@ export class AccountEmail {
         private verifiedAt: Date
     ) {}
 
-    public static create(emailAddress: EmailAddress): AccountEmail {
-        const accountEmail = new AccountEmail(emailAddress, null, null, null)
+    public static create(emailAddress: EmailAddress): AccountEmailManager {
+        const accountEmail = new AccountEmailManager(
+            emailAddress,
+            null,
+            null,
+            null
+        )
 
         accountEmail.setInitialState()
 
         return accountEmail
     }
 
-    public static fromObject(obj: AccountEmailObject): AccountEmail {
+    public static fromObject(
+        obj: AccountEmailManagerObject
+    ): AccountEmailManager {
         const {emailAddress, verifiedAt, token, tokenExpiresAt} = obj
 
-        AccountEmail.getStatus(token, tokenExpiresAt, verifiedAt)
+        AccountEmailManager.validateState(token, tokenExpiresAt, verifiedAt)
 
-        return new AccountEmail(
+        return new AccountEmailManager(
             emailAddress,
             token,
             tokenExpiresAt,
@@ -44,7 +51,7 @@ export class AccountEmail {
         )
     }
 
-    public toObject(): AccountEmailObject {
+    public toObject(): AccountEmailManagerObject {
         return {
             emailAddress: this.emailAddress,
             token: this.token,
@@ -57,15 +64,15 @@ export class AccountEmail {
         return this.emailAddress
     }
 
-    public isAlreadyVerified(): boolean {
+    public isEmailAddressVerified(): boolean {
         return !this.token && !this.tokenExpiresAt && !!this.verifiedAt
     }
 
-    public generateToken(): EmailVerificationToken {
+    public generateEmailAddressVerificationToken(): EmailVerificationToken {
         const token = EmailVerificationToken.generateToken()
 
         const tokenExpiresAt = new Date(
-            Date.now() + AccountEmail.TOKEN_EXPIRATION_TIME_IN_MS
+            Date.now() + AccountEmailManager.TOKEN_EXPIRATION_TIME_IN_MS
         )
 
         this.setInVerificationState(token, tokenExpiresAt)
@@ -73,8 +80,9 @@ export class AccountEmail {
         return this.token
     }
 
-    public verify(token: EmailVerificationToken): void {
-        if (this.isAlreadyVerified()) throw new EmailAlreadyVerifiedError()
+    public verifyEmailAddress(token: EmailVerificationToken): void {
+        if (this.isEmailAddressVerified())
+            throw new EmailAlreadyVerifiedError()
 
         const isTokenExpired =
             this.tokenExpiresAt && this.tokenExpiresAt.getTime() <= Date.now()
@@ -88,7 +96,7 @@ export class AccountEmail {
         this.setVerifiedState(verifiedAt)
     }
 
-    private static getStatus(
+    private static validateState(
         token: EmailVerificationToken,
         tokenExpiresAt: Date,
         verifiedAt: Date
@@ -104,7 +112,8 @@ export class AccountEmail {
     }
 
     private setInitialState(): void {
-        if (this.isAlreadyVerified()) throw new EmailAlreadyVerifiedError()
+        if (this.isEmailAddressVerified())
+            throw new EmailAlreadyVerifiedError()
 
         this.token = null
         this.tokenExpiresAt = null
@@ -115,7 +124,8 @@ export class AccountEmail {
         token: EmailVerificationToken,
         tokenExpiresAt: Date
     ): void {
-        if (this.isAlreadyVerified()) throw new EmailAlreadyVerifiedError()
+        if (this.isEmailAddressVerified())
+            throw new EmailAlreadyVerifiedError()
 
         this.token = token
         this.tokenExpiresAt = tokenExpiresAt
@@ -123,7 +133,8 @@ export class AccountEmail {
     }
 
     private setVerifiedState(verifiedAt: Date): void {
-        if (this.isAlreadyVerified()) throw new EmailAlreadyVerifiedError()
+        if (this.isEmailAddressVerified())
+            throw new EmailAlreadyVerifiedError()
 
         this.token = null
         this.tokenExpiresAt = null
