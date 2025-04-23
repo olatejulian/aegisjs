@@ -6,16 +6,16 @@ import {
     Password,
     PasswordResetToken,
 } from '../value-object'
-import {AccountEmail} from './AccountEmail'
-import {AccountPassword} from './AccountPassword'
+import {AccountEmailManager} from './AccountEmailManager'
+import {AccountPasswordManager} from './AccountPasswordManager'
 
 export class WrongEmailAddressOrPasswordError extends Error {}
 
 export type AccountObject = {
     id: AccountId
     name: AccountName
-    email: AccountEmail
-    password: AccountPassword
+    email: AccountEmailManager
+    password: AccountPasswordManager
     createdAt: Date
     updatedAt: Date
 }
@@ -24,16 +24,16 @@ export class Account {
     private constructor(
         private readonly accountId: AccountId,
         private accountName: AccountName,
-        private readonly accountEmail: AccountEmail,
-        private readonly accountPassword: AccountPassword,
+        private readonly accountEmailManager: AccountEmailManager,
+        private readonly accountPasswordManager: AccountPasswordManager,
         private readonly accountCreatedAt: Date,
         private accountUpdatedAt?: Date
     ) {}
 
     public static create(
         name: AccountName,
-        email: AccountEmail,
-        password: AccountPassword
+        email: AccountEmailManager,
+        password: AccountPasswordManager
     ) {
         const id = AccountId.generate()
 
@@ -52,8 +52,8 @@ export class Account {
         return {
             id: this.accountId,
             name: this.accountName,
-            email: this.accountEmail,
-            password: this.accountPassword,
+            email: this.accountEmailManager,
+            password: this.accountPasswordManager,
             createdAt: this.accountCreatedAt,
             updatedAt: this.accountUpdatedAt,
         }
@@ -68,7 +68,7 @@ export class Account {
     }
 
     public getEmailAddress(): EmailAddress {
-        return this.accountEmail.getEmailAddress()
+        return this.accountEmailManager.getEmailAddress()
     }
 
     public changeName(name: AccountName) {
@@ -77,37 +77,36 @@ export class Account {
         this.accountUpdated()
     }
 
-    public generateEmailVerificationToken(): EmailVerificationToken {
-        const token = this.accountEmail.generateToken()
+    public generateEmailAddressVerificationToken(): EmailVerificationToken {
+        const token = this.accountEmailManager.generateVerificationToken()
+
+        this.accountUpdated()
 
         return token
     }
 
-    public verifyEmail(token: EmailVerificationToken): void {
-        this.accountEmail.verify(token)
+    public verifyEmailAddress(token: EmailVerificationToken): void {
+        this.accountEmailManager.verifyEmailAddress(token)
 
         this.accountUpdated()
     }
 
-    public isEmailVerified(): boolean {
-        return this.accountEmail.isAlreadyVerified()
+    public isEmailAddressVerified(): boolean {
+        return this.accountEmailManager.isEmailAddressVerified()
     }
 
-    public async verifyPlainPassword(plainPassword: string): Promise<void> {
-        const isEqual =
-            await this.accountPassword.verifyPlainPassword(plainPassword)
-
-        if (!isEqual) throw new WrongEmailAddressOrPasswordError()
+    public async comparePassword(plainPassword: string): Promise<boolean> {
+        return await this.accountPasswordManager.comparePassword(plainPassword)
     }
 
     public changePassword(oldPassword: Password, newPassword: Password): void {
-        this.accountPassword.changePassword(oldPassword, newPassword)
+        this.accountPasswordManager.changePassword(oldPassword, newPassword)
 
         this.accountUpdated()
     }
 
     public generatePasswordResetToken(): PasswordResetToken {
-        const token = this.accountPassword.generateResetToken()
+        const token = this.accountPasswordManager.generateResetToken()
 
         return token
     }
@@ -116,7 +115,7 @@ export class Account {
         newPassword: Password,
         token: PasswordResetToken
     ): void {
-        this.accountPassword.resetPassword(newPassword, token)
+        this.accountPasswordManager.resetPassword(newPassword, token)
 
         this.accountUpdated()
     }
