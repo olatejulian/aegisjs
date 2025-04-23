@@ -6,14 +6,14 @@ export class CannotChangePasswordError extends Error {}
 
 export class CannotResetPasswordError extends Error {}
 
-export type AccountPasswordObject = {
+export type AccountPasswordManagerObject = {
     password: Password
     passwordUpdatedAt?: Date
     resetToken?: PasswordResetToken
     tokenExpiresAt?: Date
 }
 
-export class AccountPassword {
+export class AccountPasswordManager {
     private static readonly TOKEN_TIMEOUT = 1800000
 
     private constructor(
@@ -23,14 +23,16 @@ export class AccountPassword {
         private tokenExpiresAt?: Date
     ) {}
 
-    public static create(password: Password): AccountPassword {
-        return new AccountPassword(password)
+    public static create(password: Password): AccountPasswordManager {
+        return new AccountPasswordManager(password)
     }
 
-    public static fromObject(obj: AccountPasswordObject): AccountPassword {
+    public static fromObject(
+        obj: AccountPasswordManagerObject
+    ): AccountPasswordManager {
         const {password, passwordUpdatedAt, resetToken, tokenExpiresAt} = obj
 
-        return new AccountPassword(
+        return new AccountPasswordManager(
             password,
             passwordUpdatedAt,
             resetToken,
@@ -38,7 +40,7 @@ export class AccountPassword {
         )
     }
 
-    public toObject(): AccountPasswordObject {
+    public toObject(): AccountPasswordManagerObject {
         return {
             password: this.password,
             passwordUpdatedAt: this.passwordUpdatedAt,
@@ -47,7 +49,7 @@ export class AccountPassword {
         }
     }
 
-    public async verifyPlainPassword(plainPassword: string): Promise<boolean> {
+    public async comparePassword(plainPassword: string): Promise<boolean> {
         return this.password.compare(plainPassword)
     }
 
@@ -56,7 +58,7 @@ export class AccountPassword {
 
         if (!isEqual) throw new CannotResetPasswordError()
 
-        this.updateAccountPassword(newPassword)
+        this.updatePassword(newPassword)
     }
 
     public generateResetToken(): PasswordResetToken {
@@ -65,7 +67,9 @@ export class AccountPassword {
 
         const token = PasswordResetToken.generateToken()
 
-        const expiresAt = new Date(Date.now() + AccountPassword.TOKEN_TIMEOUT)
+        const expiresAt = new Date(
+            Date.now() + AccountPasswordManager.TOKEN_TIMEOUT
+        )
 
         this.resetToken = token
 
@@ -85,10 +89,10 @@ export class AccountPassword {
 
         if (!isEqual || isExpired) throw new CannotResetPasswordError()
 
-        this.updateAccountPassword(newPassword)
+        this.updatePassword(newPassword)
     }
 
-    private updateAccountPassword(newPassword: Password): void {
+    private updatePassword(newPassword: Password): void {
         this.password = newPassword
 
         this.passwordUpdatedAt = new Date()
