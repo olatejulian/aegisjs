@@ -1,3 +1,3 @@
 export * from './Account'
-export * from './AccountEmail'
+export * from './AccountEmailManager'
 export * from './AccountPassword'
