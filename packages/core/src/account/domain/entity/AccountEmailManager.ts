@@ -68,7 +68,7 @@ export class AccountEmailManager {
         return !this.token && !this.tokenExpiresAt && !!this.verifiedAt
     }
 
-    public generateEmailAddressVerificationToken(): EmailVerificationToken {
+    public generateVerificationToken(): EmailVerificationToken {
         const token = EmailVerificationToken.generateToken()
 
         const tokenExpiresAt = new Date(
