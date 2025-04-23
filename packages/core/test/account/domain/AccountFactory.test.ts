@@ -22,6 +22,6 @@ describe('Account Factory Unit Tests', () => {
 
         expect(account.getEmailAddress().toString()).toBe(emailAddressString)
 
-        expect(account.verifyPlainPassword(passwordString)).toBeTruthy()
+        expect(account.comparePassword(passwordString)).toBeTruthy()
     })
 })

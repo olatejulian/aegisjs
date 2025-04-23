@@ -1,28 +1,28 @@
 // AccountPassword.spec.ts
 
 import {
-    AccountPassword,
+    AccountPasswordManager,
     CannotGenerateResetTokenError,
     CannotResetPasswordError,
     Password,
     PasswordResetToken,
 } from '@core/account'
 
-describe('AccountPassword', () => {
+describe('Account Password Manager Unit Tests', () => {
     let oldPassword: Password
     let newPassword: Password
-    let accountPassword: AccountPassword
+    let accountPasswordManager: AccountPasswordManager
 
     beforeEach(async () => {
         oldPassword = await Password.fromPlainString('Valid@Password123')
 
         newPassword = await Password.fromPlainString('New@Password456')
 
-        accountPassword = AccountPassword.create(oldPassword)
+        accountPasswordManager = AccountPasswordManager.create(oldPassword)
     })
 
-    it('should create an AccountPassword and convert to object', () => {
-        const obj = accountPassword.toObject()
+    it('should create an AccountPasswordManager and convert to object', () => {
+        const obj = accountPasswordManager.toObject()
 
         expect(obj.password.toString()).toEqual(oldPassword.toString())
 
@@ -35,20 +35,20 @@ describe('AccountPassword', () => {
 
     it('should verify correct plain password', async () => {
         expect(
-            await accountPassword.verifyPlainPassword('Valid@Password123')
+            await accountPasswordManager.comparePassword('Valid@Password123')
         ).toBe(true)
     })
 
     it('should verify incorrect plain password', async () => {
-        expect(
-            await accountPassword.verifyPlainPassword('WrongPassword')
-        ).toBe(false)
+        expect(await accountPasswordManager.comparePassword('WrongPassword')).toBe(
+            false
+        )
     })
 
     it('should change password if old password matches', () => {
-        accountPassword.changePassword(oldPassword, newPassword)
+        accountPasswordManager.changePassword(oldPassword, newPassword)
 
-        const obj = accountPassword.toObject()
+        const obj = accountPasswordManager.toObject()
 
         expect(obj.password.toString()).toEqual(newPassword.toString())
 
@@ -61,14 +61,14 @@ describe('AccountPassword', () => {
         const wrongOld = await Password.fromPlainString('Wrong@Password123')
 
         expect(() =>
-            accountPassword.changePassword(wrongOld, newPassword)
+            accountPasswordManager.changePassword(wrongOld, newPassword)
         ).toThrow(CannotResetPasswordError)
     })
 
     it('should generate a reset token if none exists or is expired', () => {
-        const token = accountPassword.generateResetToken()
+        const token = accountPasswordManager.generateResetToken()
 
-        const obj = accountPassword.toObject()
+        const obj = accountPasswordManager.toObject()
 
         expect(obj.resetToken?.toString()).toEqual(token.toString())
 
@@ -76,19 +76,19 @@ describe('AccountPassword', () => {
     })
 
     it('should throw error if reset token already exists and is not expired', () => {
-        accountPassword.generateResetToken()
+        accountPasswordManager.generateResetToken()
 
-        expect(() => accountPassword.generateResetToken()).toThrow(
+        expect(() => accountPasswordManager.generateResetToken()).toThrow(
             CannotGenerateResetTokenError
         )
     })
 
     it('should reset password with valid token and update metadata', () => {
-        const token = accountPassword.generateResetToken()
+        const token = accountPasswordManager.generateResetToken()
 
-        accountPassword.resetPassword(newPassword, token)
+        accountPasswordManager.resetPassword(newPassword, token)
 
-        const obj = accountPassword.toObject()
+        const obj = accountPasswordManager.toObject()
 
         expect(obj.password.toString()).toEqual(newPassword.toString())
 
@@ -100,23 +100,23 @@ describe('AccountPassword', () => {
     })
 
     it('should throw error when token is invalid', () => {
-        accountPassword.generateResetToken()
+        accountPasswordManager.generateResetToken()
 
         const invalidToken = PasswordResetToken.generateToken()
 
         expect(() =>
-            accountPassword.resetPassword(newPassword, invalidToken)
+            accountPasswordManager.resetPassword(newPassword, invalidToken)
         ).toThrow(CannotResetPasswordError)
     })
 
     it('should throw error when token is expired', () => {
-        const token = accountPassword.generateResetToken()
+        const token = accountPasswordManager.generateResetToken()
 
-        const obj = accountPassword.toObject()
+        const obj = accountPasswordManager.toObject()
 
         const expiredDate = new Date(Date.now() - 1000)
-        
-        const expiredAccount = AccountPassword.fromObject({
+
+        const expiredAccount = AccountPasswordManager.fromObject({
             ...obj,
             tokenExpiresAt: expiredDate,
         })

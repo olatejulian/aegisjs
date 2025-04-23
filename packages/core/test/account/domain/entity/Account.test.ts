@@ -1,8 +1,8 @@
 import {
     Account,
-    AccountEmail,
+    AccountEmailManager,
     AccountName,
-    AccountPassword,
+    AccountPasswordManager,
     EmailAddress,
     EmailVerificationToken,
     Password,
@@ -10,9 +10,9 @@ import {
 
 describe('Account unit tests', () => {
     let account: Account
-    let accountEmail: AccountEmail
+    let accountEmail: AccountEmailManager
     let accountName: AccountName
-    let accountPassword: AccountPassword
+    let accountPassword: AccountPasswordManager
     let emailAddress: EmailAddress
     let password: Password
 
@@ -25,9 +25,9 @@ describe('Account unit tests', () => {
 
         password = await Password.fromPlainString('MyPasswordWith!@#And123')
 
-        accountEmail = AccountEmail.create(emailAddress)
+        accountEmail = AccountEmailManager.create(emailAddress)
 
-        accountPassword = AccountPassword.create(password)
+        accountPassword = AccountPasswordManager.create(password)
 
         account = Account.create(accountName, accountEmail, accountPassword)
     })
@@ -57,17 +57,17 @@ describe('Account unit tests', () => {
     })
 
     it('should be able to generate a email verification token and verify the email address', () => {
-        const token = account.generateEmailVerificationToken()
+        const token = account.generateEmailAddressVerificationToken()
 
         expect(token).toBeDefined()
 
         expect(token).toBeInstanceOf(EmailVerificationToken)
 
-        expect(account.isEmailVerified()).toBeFalsy()
+        expect(account.isEmailAddressVerified()).toBeFalsy()
 
-        account.verifyEmail(token)
+        account.verifyEmailAddress(token)
 
-        expect(account.isEmailVerified()).toBeTruthy()
+        expect(account.isEmailAddressVerified()).toBeTruthy()
     })
 
     it('should be able to change the password', async () => {

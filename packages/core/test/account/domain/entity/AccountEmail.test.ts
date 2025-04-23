@@ -1,53 +1,60 @@
 import {
-    AccountEmail,
     AccountEmailCorruptedStateError,
+    AccountEmailManager,
     CantVerifyEmailError,
     EmailAddress,
     EmailAlreadyVerifiedError,
     EmailVerificationToken,
 } from '@core/account'
 
-describe('_AccountEmail', () => {
+describe('Account Email Manager Unit Tests', () => {
     const validEmail = EmailAddress.create('user@example.com')
 
     it('should initialize in the initial state', () => {
-        const email = AccountEmail.create(validEmail)
+        const accountEmailManager = AccountEmailManager.create(validEmail)
 
-        expect(email.isAlreadyVerified()).toBeFalsy()
+        expect(accountEmailManager.isEmailAddressVerified()).toBeFalsy()
     })
 
     it('should generate a token and set verification state', () => {
-        const email = AccountEmail.create(validEmail)
+        const accountEmailManager = AccountEmailManager.create(validEmail)
 
-        const token = email.generateToken()
+        const token = accountEmailManager.generateVerificationToken()
 
         expect(token).toBeInstanceOf(EmailVerificationToken)
     })
 
     it('should verify if token is valid and not expired', () => {
-        const email = AccountEmail.create(validEmail)
+        const accountEmailManager = AccountEmailManager.create(validEmail)
 
-        const token = email.generateToken()
+        const token = accountEmailManager.generateVerificationToken()
 
-        expect(() => email.verify(token)).not.toThrow()
+        expect(() =>
+            accountEmailManager.verifyEmailAddress(token)
+        ).not.toThrow()
 
-        expect(email.isAlreadyVerified()).toBeTruthy()
+        expect(accountEmailManager.isEmailAddressVerified()).toBeTruthy()
     })
 
     it('should throw EmailAlreadyVerifiedError when verifying again', () => {
-        const email = AccountEmail.create(validEmail)
-        const token = email.generateToken()
+        const accountEmailManager = AccountEmailManager.create(validEmail)
 
-        email.verify(token)
+        const token = accountEmailManager.generateVerificationToken()
 
-        expect(() => email.verify(token)).toThrow(EmailAlreadyVerifiedError)
+        accountEmailManager.verifyEmailAddress(token)
+
+        expect(() => accountEmailManager.verifyEmailAddress(token)).toThrow(
+            EmailAlreadyVerifiedError
+        )
     })
 
     it('should throw CantVerifyEmailError on expired token', () => {
-        const email = AccountEmail.create(validEmail)
-        const token = email.generateToken()
+        const accountEmailManager = AccountEmailManager.create(validEmail)
+
+        const token = accountEmailManager.generateVerificationToken()
 
         const oldDate = new Date(Date.now() - 3600 * 1000)
+
         const obj = {
             emailAddress: validEmail,
             token,
@@ -55,18 +62,25 @@ describe('_AccountEmail', () => {
             verifiedAt: null,
         }
 
-        const expired = AccountEmail.fromObject(obj)
+        const expired = AccountEmailManager.fromObject(obj)
 
-        expect(() => expired.verify(token)).toThrow(CantVerifyEmailError)
+        expect(() => expired.verifyEmailAddress(token)).toThrow(
+            CantVerifyEmailError
+        )
     })
 
     it('should throw CantVerifyEmailError on mismatched token', () => {
-        const email = AccountEmail.create(validEmail)
-        email.generateToken()
+        const accountEmailManager = AccountEmailManager.create(validEmail)
+
+        const token = accountEmailManager.generateVerificationToken()
 
         const wrongToken = EmailVerificationToken.generateToken()
 
-        expect(() => email.verify(wrongToken)).toThrow(CantVerifyEmailError)
+        expect(token.equals(wrongToken)).toBeFalsy()
+
+        expect(() =>
+            accountEmailManager.verifyEmailAddress(wrongToken)
+        ).toThrow(CantVerifyEmailError)
     })
 
     it('should throw AccountEmailCorruptedStateError on invalid state', () => {
@@ -77,15 +91,15 @@ describe('_AccountEmail', () => {
             verifiedAt: new Date(),
         }
 
-        expect(() => AccountEmail.fromObject(obj)).toThrow(
+        expect(() => AccountEmailManager.fromObject(obj)).toThrow(
             AccountEmailCorruptedStateError
         )
     })
 
     it('should serialize and deserialize correctly', () => {
-        const email = AccountEmail.create(validEmail)
+        const email = AccountEmailManager.create(validEmail)
 
-        const verifiedEmail = AccountEmail.fromObject(email.toObject())
+        const verifiedEmail = AccountEmailManager.fromObject(email.toObject())
 
         expect(verifiedEmail.toObject()).toEqual(email.toObject())
     })
