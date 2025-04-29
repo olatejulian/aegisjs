@@ -1,57 +1,29 @@
-import {
-    Body,
-    Controller,
-    HttpException,
-    HttpStatus,
-    Post,
-    Res,
-} from '@nestjs/common'
-import {ConfigService} from '@nestjs/config'
-import {ApiBody, ApiResponse, ApiTags} from '@nestjs/swagger'
+import {Body, Controller, HttpException, HttpStatus} from '@nestjs/common'
+import {ApiTags} from '@nestjs/swagger'
 import {
     InvalidAccountNameError,
     InvalidEmailAddressError,
     InvalidPasswordError,
 } from '@ts-api-example/core'
-import date from 'date-fns'
-import express from 'express'
-import {
-    CreateAccount201Response,
-    CreateAccount400Response,
-    CreateAccount422Response,
-} from './account.response'
+import {AccountSignupPost} from './account-signup-post.decorator'
 import {AccountService} from './account.service'
-import {AuthenticateAccountDto, CreateAccountDto} from './dto'
+import {CreateAccountDto} from './dto'
 
 @ApiTags('Account')
 @Controller('account')
 export class AccountController {
-    constructor(
-        private readonly service: AccountService,
-        private readonly configService: ConfigService
-    ) {}
+    constructor(private readonly service: AccountService) {}
 
-    @Post('create-account')
-    @ApiTags('Public Routes')
-    @ApiBody({type: CreateAccountDto})
-    @ApiResponse({
-        status: HttpStatus.CREATED,
-        description: 'Account created successfully',
-        type: CreateAccount201Response,
-    })
-    @ApiResponse({
-        status: HttpStatus.BAD_REQUEST,
-        description: 'Oh, no! Something went wrong',
-        type: CreateAccount400Response,
-    })
-    @ApiResponse({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        description: 'Schema validation failed',
-        type: CreateAccount422Response,
-    })
-    public async createAccount(@Body() requestBody: CreateAccountDto) {
+    @AccountSignupPost()
+    public async signup(@Body() requestBody: CreateAccountDto) {
+        return await this.handleSignupRequest(
+            async () => await this.service.createAccount(requestBody)
+        )
+    }
+
+    private async handleSignupRequest(serviceMethod: () => Promise<void>) {
         try {
-            await this.service.createAccount(requestBody)
+            await serviceMethod()
 
             return {
                 status: 201,
@@ -82,46 +54,5 @@ export class AccountController {
                 )
             }
         }
-    }
-
-    @Post('login')
-    public async logIn(
-        @Body() requestBody: AuthenticateAccountDto,
-        @Res() response: express.Response
-    ) {
-        const tokens = await this.service.authenticateAccount(requestBody)
-
-        if (!tokens) {
-            throw new HttpException(
-                'Invalid credentials',
-                HttpStatus.UNAUTHORIZED,
-                {
-                    description: 'Unauthorized',
-                }
-            )
-        }
-
-        this.setRefreshTokenCookie(response, tokens.refreshToken)
-
-        return {
-            status: 200,
-            data: tokens.accessToken,
-        }
-    }
-
-    private setRefreshTokenCookie(
-        response: express.Response,
-        refreshToken: string
-    ): void {
-        response.cookie('refresh-token', refreshToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            expires: date.add(new Date(), {
-                minutes: this.configService.get<number>(
-                    'AUTH_REFRESH_TOKEN_DURATION_MINUTES'
-                ),
-            }),
-        })
     }
 }
