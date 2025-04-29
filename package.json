@@ -26,7 +26,7 @@
   },
   "license": "MIT",
   "name": "ts-api-example",
-  "packageManager": "pnpm@10.6.3",
+  "packageManager": "pnpm@10.10.0",
   "private": true,
   "scripts": {
     "build": "turbo run build"
