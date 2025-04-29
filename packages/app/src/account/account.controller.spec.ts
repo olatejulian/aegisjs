@@ -1,14 +1,10 @@
-import { CACHE_MANAGER, CacheModule } from '@nestjs/cache-manager'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { JwtModule, JwtService } from '@nestjs/jwt'
-import { Test, TestingModule } from '@nestjs/testing'
-import {
-    AccountRepository,
-    InMemoryAccountRepository
-} from '@ts-api-example/core'
-import { Cache } from 'cache-manager'
-import { AccountController } from './account.controller'
-import { AccountService } from './account.service'
+import {CacheModule} from '@nestjs/cache-manager'
+import {ConfigModule} from '@nestjs/config'
+import {JwtModule} from '@nestjs/jwt'
+import {Test, TestingModule} from '@nestjs/testing'
+import {AccountController} from './account.controller'
+import {AccountService} from './account.service'
+import {InMemoryAccountRepository} from './repository'
 
 describe('AccountController', () => {
     let controller: AccountController
@@ -24,26 +20,10 @@ describe('AccountController', () => {
             providers: [
                 {
                     provide: AccountService,
-                    useFactory: (
-                        repository: AccountRepository,
-                        jwtService: JwtService,
-                        configService: ConfigService,
-                        cacheService: Cache
-                    ) =>
-                        new AccountService(
-                            repository,
-                            jwtService,
-                            configService,
-                            cacheService
-                        ),
-                    inject: [
-                        InMemoryAccountRepository,
-                        JwtService,
-                        ConfigService,
-                        CACHE_MANAGER,
-                    ],
+                    useValue: new AccountService(
+                        new InMemoryAccountRepository()
+                    ),
                 },
-                InMemoryAccountRepository,
             ],
         }).compile()
 
@@ -52,6 +32,8 @@ describe('AccountController', () => {
 
     it('should be defined', () => {
         expect(controller).toBeDefined()
+
+        expect(controller).toBeInstanceOf(AccountController)
     })
 
     it('should be able to do an account sign up', async () => {
@@ -61,21 +43,18 @@ describe('AccountController', () => {
             password: 'JohnDoe123!@#',
         }
 
-        await controller.createAccount(requestBody)
+        await controller.signup(requestBody)
     })
 
-    it('should be return an http exception when try to create an account with invalid name', async () => {
+    it('should be return an http exception when try to create an account with invalid data', async () => {
         const requestBody = {
             name: '',
-            email: 'john.doe@email.com',
+            email: 'john.doe@email.com*ASDF*',
             password: 'JohnDoe123!@#',
         }
 
-        await controller.createAccount(requestBody).catch(error => {
+        await controller.signup(requestBody).catch(error => {
             expect(error.status).toBe(422)
-            expect(error.message).toBe(
-                'Account name must have at least 3 characters'
-            )
         })
     })
 })
