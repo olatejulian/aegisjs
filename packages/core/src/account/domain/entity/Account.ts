@@ -6,8 +6,8 @@ import {
     Password,
     PasswordResetToken,
 } from '../value-object'
-import {AccountEmailManager} from './AccountEmailManager'
-import {AccountPasswordManager} from './AccountPasswordManager'
+import {AccountEmailManager} from './account-email-manager'
+import {AccountPasswordManager} from './account-password-manager'
 
 export class WrongEmailAddressOrPasswordError extends Error {}
 
