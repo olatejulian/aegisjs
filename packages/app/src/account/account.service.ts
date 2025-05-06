@@ -1,6 +1,11 @@
 import {Injectable} from '@nestjs/common'
-import {AccountFactory, AccountRepository} from '@ts-api-example/core'
-import {CreateAccountDto} from './dto'
+import {
+    AccountFactory,
+    AccountRepository,
+    EmailAddress,
+    EmailVerificationToken,
+} from '@ts-api-example/core'
+import {CreateAccountDto, VerifyEmailDto} from './dto'
 
 @Injectable()
 export class AccountService {
@@ -16,6 +21,27 @@ export class AccountService {
             emailAddress,
             password,
         })
+
+        await this.repository.save(account)
+    }
+
+    public async verifyEmailAddress(dto: VerifyEmailDto): Promise<void> {
+        const {
+            emailAddress: emailAddressString,
+            verificationToken: verificationTokenString,
+        } = dto
+
+        const emailAddress = EmailAddress.create(emailAddressString)
+
+        const account = await this.repository.findByEmail(emailAddress)
+
+        if (!account) return
+
+        const verificationToken = EmailVerificationToken.fromString(
+            verificationTokenString
+        )
+
+        account.verifyEmailAddress(verificationToken)
 
         await this.repository.save(account)
     }

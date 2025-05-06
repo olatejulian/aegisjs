@@ -10,8 +10,8 @@ export class CreateAccountDto {
     @ApiProperty({example: 'JohnDoe123!@#'})
     public readonly password: string
 
-    constructor(input: {name: string; email: string; password: string}) {
-        const {name, email, password} = input
+    constructor(props: {name: string; email: string; password: string}) {
+        const {name, email, password} = props
 
         this.name = name
         this.email = email
