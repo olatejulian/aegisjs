@@ -11,7 +11,7 @@ import {AccountPasswordManager} from './account-password-manager'
 
 export class WrongEmailAddressOrPasswordError extends Error {}
 
-export type AccountObject = {
+export interface AccountProperties {
     id: AccountId
     name: AccountName
     email: AccountEmailManager
@@ -42,13 +42,13 @@ export class Account {
         return new Account(id, name, email, password, createdAt)
     }
 
-    public static fromObject(obj: AccountObject) {
-        const {id, name, email, password, createdAt, updatedAt} = obj
+    public static recreate(props: AccountProperties) {
+        const {id, name, email, password, createdAt, updatedAt} = props
 
         return new Account(id, name, email, password, createdAt, updatedAt)
     }
 
-    public toObject(): AccountObject {
+    public toObject() {
         return {
             id: this.accountId,
             name: this.accountName,

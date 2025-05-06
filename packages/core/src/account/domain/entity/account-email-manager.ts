@@ -6,7 +6,7 @@ export class CantVerifyEmailError extends Error {}
 
 export class EmailAlreadyVerifiedError extends Error {}
 
-export type AccountEmailManagerObject = {
+export type AccountEmailManagerProperties = {
     emailAddress: EmailAddress
     token: EmailVerificationToken
     tokenExpiresAt: Date
@@ -18,26 +18,21 @@ export class AccountEmailManager {
 
     private constructor(
         private readonly emailAddress: EmailAddress,
-        private token: EmailVerificationToken,
-        private tokenExpiresAt: Date,
-        private verifiedAt: Date
+        private token?: EmailVerificationToken,
+        private tokenExpiresAt?: Date,
+        private verifiedAt?: Date
     ) {}
 
     public static create(emailAddress: EmailAddress): AccountEmailManager {
-        const accountEmail = new AccountEmailManager(
-            emailAddress,
-            null,
-            null,
-            null
-        )
+        const accountEmail = new AccountEmailManager(emailAddress)
 
         accountEmail.setInitialState()
 
         return accountEmail
     }
 
-    public static fromObject(
-        obj: AccountEmailManagerObject
+    public static recreate(
+        obj: AccountEmailManagerProperties
     ): AccountEmailManager {
         const {emailAddress, verifiedAt, token, tokenExpiresAt} = obj
 
@@ -51,7 +46,7 @@ export class AccountEmailManager {
         )
     }
 
-    public toObject(): AccountEmailManagerObject {
+    public toObject(): AccountEmailManagerProperties {
         return {
             emailAddress: this.emailAddress,
             token: this.token,
