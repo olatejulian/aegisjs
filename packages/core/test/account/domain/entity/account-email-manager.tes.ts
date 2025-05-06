@@ -62,7 +62,7 @@ describe('Account Email Manager Unit Tests', () => {
             verifiedAt: null,
         }
 
-        const expired = AccountEmailManager.fromObject(obj)
+        const expired = AccountEmailManager.recreate(obj)
 
         expect(() => expired.verifyEmailAddress(token)).toThrow(
             CantVerifyEmailError
@@ -91,7 +91,7 @@ describe('Account Email Manager Unit Tests', () => {
             verifiedAt: new Date(),
         }
 
-        expect(() => AccountEmailManager.fromObject(obj)).toThrow(
+        expect(() => AccountEmailManager.recreate(obj)).toThrow(
             AccountEmailCorruptedStateError
         )
     })
@@ -99,7 +99,7 @@ describe('Account Email Manager Unit Tests', () => {
     it('should serialize and deserialize correctly', () => {
         const email = AccountEmailManager.create(validEmail)
 
-        const verifiedEmail = AccountEmailManager.fromObject(email.toObject())
+        const verifiedEmail = AccountEmailManager.recreate(email.toObject())
 
         expect(verifiedEmail.toObject()).toEqual(email.toObject())
     })
