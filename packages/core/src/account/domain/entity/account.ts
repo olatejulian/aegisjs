@@ -1,3 +1,5 @@
+import { AggregateRoot } from '@core/shared'
+import { AccountCreatedEvent } from '../event'
 import {
     AccountId,
     AccountName,
@@ -6,8 +8,8 @@ import {
     Password,
     PasswordResetToken,
 } from '../value-object'
-import {AccountEmailManager} from './account-email-manager'
-import {AccountPasswordManager} from './account-password-manager'
+import { AccountEmailManager } from './account-email-manager'
+import { AccountPasswordManager } from './account-password-manager'
 
 export class WrongEmailAddressOrPasswordError extends Error {}
 
@@ -20,7 +22,7 @@ export interface AccountProperties {
     updatedAt: Date
 }
 
-export class Account {
+export class Account extends AggregateRoot {
     private constructor(
         private readonly accountId: AccountId,
         private accountName: AccountName,
@@ -28,7 +30,9 @@ export class Account {
         private readonly accountPasswordManager: AccountPasswordManager,
         private readonly accountCreatedAt: Date,
         private accountUpdatedAt?: Date
-    ) {}
+    ) {
+        super()
+    }
 
     public static create(
         name: AccountName,
@@ -39,7 +43,17 @@ export class Account {
 
         const createdAt = new Date()
 
-        return new Account(id, name, email, password, createdAt)
+        const account = new Account(id, name, email, password, createdAt)
+
+        const accountCreatedEvent = new AccountCreatedEvent({
+        accountId: account.getId(),
+        accountName: account.getName(),
+        accountEmailAddress: email.getEmailAddress(),
+        })
+
+        account.addDomainEvent(accountCreatedEvent)
+
+        return account
     }
 
     public static recreate(props: AccountProperties) {
