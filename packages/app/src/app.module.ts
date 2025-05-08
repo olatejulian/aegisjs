@@ -1,9 +1,11 @@
-import {CacheModule} from '@nestjs/cache-manager'
-import {Module} from '@nestjs/common'
-import {ConfigModule} from '@nestjs/config'
-import {EventEmitterModule} from '@nestjs/event-emitter'
-import {AccountModule} from './account/account.module'
-import {AuthModule} from './auth/auth.module'
+import { CacheModule } from '@nestjs/cache-manager'
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+import { AccountModule } from './account/account.module'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
     imports: [
@@ -19,5 +21,7 @@ import {AuthModule} from './auth/auth.module'
         AccountModule,
         AuthModule,
     ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}
