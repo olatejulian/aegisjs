@@ -1,6 +1,7 @@
 onlyBuiltDependencies:
   - '@nestjs/core'
   - '@swc/core'
+  - bcrypt
 
 packages:
-  - 'packages/*'
+  - packages/*
