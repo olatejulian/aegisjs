@@ -5,6 +5,11 @@
       "dependsOn": [
         "^build"
       ]
+    },
+    "test": {
+      "dependsOn": [
+        "^test"
+      ]
     }
   }
 }

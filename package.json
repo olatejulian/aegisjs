@@ -23,7 +23,8 @@
   "packageManager": "pnpm@10.10.0",
   "private": true,
   "scripts": {
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "test": "turbo run test"
   },
   "version": "0.0.1"
 }
