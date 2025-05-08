@@ -1,8 +1,8 @@
-import type {Config} from 'jest'
+import type { Config } from 'jest'
 
 const config: Config = {
     collectCoverageFrom: ['**/*.(t|j)s'],
-    coverageDirectory: '../coverage',
+    coverageDirectory: '../../coverage',
     moduleFileExtensions: ['js', 'json', 'ts'],
     rootDir: 'src',
     testEnvironment: 'node',
