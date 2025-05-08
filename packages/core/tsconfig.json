@@ -5,10 +5,14 @@
       "@core/*": [
         "src/*"
       ]
-    },
+    }
   },
   "exclude": [
-    "./lib"
+    "lib",
+    "node_modules"
   ],
   "extends": "./tsconfig.base.json",
+  "include": [
+    "src"
+  ]
 }
