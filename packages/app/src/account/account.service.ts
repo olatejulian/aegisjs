@@ -1,11 +1,11 @@
-import {Injectable} from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import {
     AccountFactory,
     AccountRepository,
     EmailAddress,
     EmailVerificationToken,
 } from '@ts-api-example/core'
-import {CreateAccountDto, VerifyEmailDto} from './dto'
+import { CreateAccountDto, VerifyEmailDto } from './dto'
 
 @Injectable()
 export class AccountService {
