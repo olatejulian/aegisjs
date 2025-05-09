@@ -9,9 +9,11 @@ export interface AccountCreatedEventPayload {
 
 
 export class AccountCreatedEvent extends DomainEvent<AccountCreatedEventPayload> {
+    public static EVENT_NAME = 'account.created'
+
     constructor(payload: AccountCreatedEventPayload) {
         super({
-            eventName: "account.created",
+            eventName: AccountCreatedEvent.EVENT_NAME,
             payload: payload
         })
     }
