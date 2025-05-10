@@ -23,6 +23,8 @@
   "packageManager": "pnpm@10.10.0",
   "private": true,
   "scripts": {
+    "@app": "pnpm --filter @ts-api-example/app",
+    "@core": "pnpm --filter @ts-api-example/core",
     "build": "turbo run build",
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage"
