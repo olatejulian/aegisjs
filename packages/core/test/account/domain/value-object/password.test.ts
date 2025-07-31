@@ -12,7 +12,7 @@ describe('Password Unit Tests', () => {
     it('should throw an error when password is invalid', async () => {
         const invalidPasswordString = 'foo'
 
-        expect(async () => {
+        await expect(async () => {
             await Password.fromPlainString(invalidPasswordString)
         }).rejects.toThrow(InvalidPasswordError)
     })

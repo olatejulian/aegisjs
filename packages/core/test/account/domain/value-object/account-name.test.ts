@@ -37,6 +37,4 @@ describe('AccountName Unit Tests', () => {
             InvalidAccountNameError
         )
     })
-
-    
 })

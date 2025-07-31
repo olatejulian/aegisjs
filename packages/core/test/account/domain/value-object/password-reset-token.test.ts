@@ -1,7 +1,4 @@
-import {
-    InvalidPasswordResetTokenError,
-    PasswordResetToken,
-} from '@core/account'
+import {InvalidPasswordResetTokenError, PasswordResetToken} from '@core/account'
 import {validate} from 'uuid'
 
 describe('Password Reset Token Unit Tests', () => {

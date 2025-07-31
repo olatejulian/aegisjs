@@ -40,9 +40,9 @@ describe('Account Password Manager Unit Tests', () => {
     })
 
     it('should verify incorrect plain password', async () => {
-        expect(await accountPasswordManager.comparePassword('WrongPassword')).toBe(
-            false
-        )
+        expect(
+            await accountPasswordManager.comparePassword('WrongPassword')
+        ).toBe(false)
     })
 
     it('should change password if old password matches', () => {
