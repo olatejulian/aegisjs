@@ -6,6 +6,16 @@
         "^build"
       ]
     },
+    "format": {
+      "dependsOn": [
+        "^format"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ]
+    },
     "test": {
       "dependsOn": [
         "^test"
