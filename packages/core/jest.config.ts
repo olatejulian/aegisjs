@@ -1,4 +1,4 @@
-import type { Config } from 'jest'
+import type {Config} from 'jest'
 
 const config: Config = {
     collectCoverageFrom: ['**/*.(t|j)s'],
@@ -9,7 +9,7 @@ const config: Config = {
         '@core/(.*)$': '<rootDir>/src/$1',
     },
     testEnvironment: 'node',
-    testRegex: [".*\\.spec\\.ts$", ".*\\.test\\.ts$"],
+    testRegex: ['.*\\.spec\\.ts$', '.*\\.test\\.ts$'],
     transform: {
         '^.+\\.(t|j)s?$': ['ts-jest', {useESM: true}],
     },
