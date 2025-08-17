@@ -20,8 +20,7 @@ export class AuthService {
     public async generateTokens(
         emailAddress: EmailAddress
     ): Promise<AuthTokensDto> {
-        const accessToken =
-            await this.accessTokenService.generate(emailAddress)
+        const accessToken = await this.accessTokenService.generate(emailAddress)
 
         const refreshToken =
             await this.refreshTokenService.generate(emailAddress)
