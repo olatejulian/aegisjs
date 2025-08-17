@@ -46,7 +46,7 @@ export class AccountController {
                 status: 201,
                 data: {},
             }
-        } catch (error: any) {
+        } catch (error) {
             if (
                 error instanceof InvalidAccountNameError ||
                 error instanceof InvalidEmailAddressError ||
@@ -83,7 +83,7 @@ export class AccountController {
                 status: 200,
                 data: {},
             }
-        } catch (error: any) {
+        } catch (error) {
             if (
                 error instanceof InvalidEmailAddressError ||
                 error instanceof InvalidEmailVerificationTokenError
@@ -97,15 +97,11 @@ export class AccountController {
                     }
                 )
             } else if (error instanceof CantVerifyEmailError) {
-                throw new HttpException(
-                    error.message,
-                    HttpStatus.BAD_REQUEST,
-                    {
-                        cause: error,
-                        description:
-                            'The provided token does not match any active email verification requests.',
-                    }
-                )
+                throw new HttpException(error.message, HttpStatus.BAD_REQUEST, {
+                    cause: error,
+                    description:
+                        'The provided token does not match any active email verification requests.',
+                })
             } else {
                 throw new HttpException(
                     error.message,

@@ -34,6 +34,6 @@ describe('Account Service Test Suite', () => {
             password: 'JohnDoe123!@#',
         })
 
-        await service.createAccount(createAccountDto)
+        expect(await service.createAccount(createAccountDto)).toBeUndefined()
     })
 })

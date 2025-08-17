@@ -43,7 +43,8 @@ describe('AccountController', () => {
             password: 'JohnDoe123!@#',
         }
 
-        await controller.signup(requestBody)
+        const result = await controller.signup(requestBody)
+        expect(result).toBeDefined()
     })
 
     it('should be return an http exception when try to create an account with invalid data', async () => {
@@ -53,8 +54,8 @@ describe('AccountController', () => {
             password: 'JohnDoe123!@#',
         }
 
-        await controller.signup(requestBody).catch(error => {
-            expect(error.status).toBe(422)
+        await expect(controller.signup(requestBody)).rejects.toMatchObject({
+            status: 422,
         })
     })
 })
