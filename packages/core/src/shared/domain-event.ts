@@ -1,10 +1,12 @@
 export abstract class DomainEvent<Payload> {
     private readonly eventOccurredAt: Date
 
-    protected constructor(private readonly props: {
-        eventName: string
-        payload: Payload
-    }) {
+    protected constructor(
+        private readonly props: {
+            eventName: string
+            payload: Payload
+        }
+    ) {
         this.eventOccurredAt = new Date()
     }
 

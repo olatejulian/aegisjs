@@ -1,9 +1,9 @@
-import { DomainEvent } from './domain-event'
+import {DomainEvent} from './domain-event'
 
 export class AggregateRoot {
-    private readonly domainEvents: DomainEvent<any>[] = []
+    private readonly domainEvents: DomainEvent<unknown>[] = []
 
-    public getDomainEvents(): DomainEvent<any>[] {
+    public getDomainEvents(): DomainEvent<unknown>[] {
         const events = [...this.domainEvents]
 
         this.domainEvents.length = 0
