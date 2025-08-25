@@ -76,8 +76,7 @@ export class AccountEmailManager {
     }
 
     public verifyEmailAddress(token: EmailVerificationToken): void {
-        if (this.isEmailAddressVerified())
-            throw new EmailAlreadyVerifiedError()
+        if (this.isEmailAddressVerified()) throw new EmailAlreadyVerifiedError()
 
         const isTokenExpired =
             this.tokenExpiresAt && this.tokenExpiresAt.getTime() <= Date.now()
@@ -107,8 +106,7 @@ export class AccountEmailManager {
     }
 
     private setInitialState(): void {
-        if (this.isEmailAddressVerified())
-            throw new EmailAlreadyVerifiedError()
+        if (this.isEmailAddressVerified()) throw new EmailAlreadyVerifiedError()
 
         this.token = null
         this.tokenExpiresAt = null
@@ -119,8 +117,7 @@ export class AccountEmailManager {
         token: EmailVerificationToken,
         tokenExpiresAt: Date
     ): void {
-        if (this.isEmailAddressVerified())
-            throw new EmailAlreadyVerifiedError()
+        if (this.isEmailAddressVerified()) throw new EmailAlreadyVerifiedError()
 
         this.token = token
         this.tokenExpiresAt = tokenExpiresAt
@@ -128,8 +125,7 @@ export class AccountEmailManager {
     }
 
     private setVerifiedState(verifiedAt: Date): void {
-        if (this.isEmailAddressVerified())
-            throw new EmailAlreadyVerifiedError()
+        if (this.isEmailAddressVerified()) throw new EmailAlreadyVerifiedError()
 
         this.token = null
         this.tokenExpiresAt = null

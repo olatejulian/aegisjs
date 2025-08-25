@@ -1,5 +1,5 @@
-import { AggregateRoot } from '@core/shared'
-import { AccountCreatedEvent } from '../event'
+import {AggregateRoot} from '@core/shared'
+import {AccountCreatedEvent} from '../event'
 import {
     AccountId,
     AccountName,
@@ -8,8 +8,8 @@ import {
     Password,
     PasswordResetToken,
 } from '../value-object'
-import { AccountEmailManager } from './account-email-manager'
-import { AccountPasswordManager } from './account-password-manager'
+import {AccountEmailManager} from './account-email-manager'
+import {AccountPasswordManager} from './account-password-manager'
 
 export class WrongEmailAddressOrPasswordError extends Error {}
 
@@ -46,9 +46,9 @@ export class Account extends AggregateRoot {
         const account = new Account(id, name, email, password, createdAt)
 
         const accountCreatedEvent = new AccountCreatedEvent({
-        accountId: account.getId(),
-        accountName: account.getName(),
-        accountEmailAddress: email.getEmailAddress(),
+            accountId: account.getId(),
+            accountName: account.getName(),
+            accountEmailAddress: email.getEmailAddress(),
         })
 
         account.addDomainEvent(accountCreatedEvent)
