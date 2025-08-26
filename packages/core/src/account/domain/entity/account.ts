@@ -45,10 +45,17 @@ export class Account extends AggregateRoot {
 
         const account = new Account(id, name, email, password, createdAt)
 
+        const accountName = account.getName()
+
+        const emailAddress = account.getEmailAddress()
+
+        const emailVerificationToken =
+            account.generateEmailAddressVerificationToken()
+
         const accountCreatedEvent = new AccountCreatedEvent({
-            accountId: account.getId(),
-            accountName: account.getName(),
-            accountEmailAddress: email.getEmailAddress(),
+            name: accountName,
+            email: emailAddress,
+            token: emailVerificationToken,
         })
 
         account.addDomainEvent(accountCreatedEvent)
