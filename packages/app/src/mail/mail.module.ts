@@ -5,6 +5,6 @@ import {MailService} from './mail.service'
 
 @Module({
     providers: [ConfigService, MailConfig, MailService],
-    exports: [MailService],
+    exports: [MailConfig, MailService],
 })
 export class MailModule {}
