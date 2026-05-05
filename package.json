@@ -3,6 +3,7 @@
   "description": "An example of a Node.js Web Server",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@rolldown/binding-linux-x64-gnu": "1.0.0-rc.18",
     "@swc/core": "^1.15.33",
     "@vitest/coverage-v8": "^4.1.5",
     "eslint": "^10.3.0",

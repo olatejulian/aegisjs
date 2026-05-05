@@ -1,17 +1,17 @@
-import { defineConfig, mergeConfig } from "vitest/config";
-import base from "../../vitest.config";
+import { defineConfig, mergeConfig } from 'vitest/config'
+import base from '../../vitest.config'
 
 export default mergeConfig(
     base,
     defineConfig({
         test: {
-            name: "core",
+            name: 'core',
 
-            include: ["./test/**"],
+            include: ['./test/**'],
 
             coverage: {
-                reportsDirectory: "../../coverage/core",
+                reportsDirectory: '../../coverage/core',
             },
         },
     }),
-);
+)

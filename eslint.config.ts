@@ -13,11 +13,7 @@ export default [
         files: ['**/*.ts'],
         languageOptions: {
             parserOptions: {
-                project: [
-                    './tsconfig.json',
-                    './packages/*/tsconfig.json',
-                    './apps/*/tsconfig.json',
-                ],
+                project: ['./tsconfig.json', './packages/*/tsconfig.json'],
             },
         },
         rules: {

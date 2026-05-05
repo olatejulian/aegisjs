@@ -59,5 +59,6 @@
     "test:e2e": " vitest run --config ./test/jest-e2e.json",
     "test:watch": "vitest"
   },
+  "type": "module",
   "version": "0.0.1"
 }
