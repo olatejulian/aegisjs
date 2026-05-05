@@ -8,10 +8,10 @@
     }
   },
   "exclude": [
-    "lib",
+    "./lib",
   ],
   "extends": "../../tsconfig.json",
   "include": [
-    "src"
+    "./src"
   ]
 }

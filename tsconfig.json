@@ -35,10 +35,10 @@
   },
   "exclude": [
     "./**/node_modules",
-    "dist",
-    "coverage"
+    "./dist",
+    "./coverage"
   ],
   "include": [
-    "packages/**/*"
+    "./packages/**/*"
   ]
 }
