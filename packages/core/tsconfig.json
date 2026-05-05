@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "paths": {
       "@core/*": [
@@ -8,9 +9,8 @@
   },
   "exclude": [
     "lib",
-    "node_modules"
   ],
-  "extends": "./tsconfig.base.json",
+  "extends": "../../tsconfig.json",
   "include": [
     "src"
   ]

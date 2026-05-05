@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -17,14 +18,27 @@
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "outDir": "dist",
     "removeComments": true,
     "resolveJsonModule": true,
+    "rootDir": ".",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "strictBindCallApply": false,
     "strictNullChecks": false,
     "target": "ES6",
-    "useDefineForClassFields": true,
-  }
+    "types": [
+      "vitest/globals"
+    ],
+    "useDefineForClassFields": true
+  },
+  "exclude": [
+    "./**/node_modules",
+    "dist",
+    "coverage"
+  ],
+  "include": [
+    "packages/**/*"
+  ]
 }

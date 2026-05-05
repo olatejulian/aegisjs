@@ -1,9 +1,0 @@
-export default {
-    arrowParens: 'avoid',
-    bracketSpacing: false,
-    printWidth: 80,
-    semi: false,
-    singleQuote: true,
-    tabWidth: 4,
-    trailingComma: 'es5',
-}

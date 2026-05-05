@@ -4,8 +4,8 @@
     "rootDir": "./src"
   },
   "exclude": [
-    "jest.config.ts",
+    "vitest.config.ts",
     "test"
   ],
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.json"
 }
