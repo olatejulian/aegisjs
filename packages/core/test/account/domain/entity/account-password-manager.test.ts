@@ -34,15 +34,11 @@ describe('Account Password Manager Unit Tests', () => {
     })
 
     it('should verify correct plain password', async () => {
-        expect(
-            await accountPasswordManager.comparePassword('Valid@Password123')
-        ).toBe(true)
+        expect(await accountPasswordManager.comparePassword('Valid@Password123')).toBe(true)
     })
 
     it('should verify incorrect plain password', async () => {
-        expect(
-            await accountPasswordManager.comparePassword('WrongPassword')
-        ).toBe(false)
+        expect(await accountPasswordManager.comparePassword('WrongPassword')).toBe(false)
     })
 
     it('should change password if old password matches', () => {
@@ -60,9 +56,9 @@ describe('Account Password Manager Unit Tests', () => {
     it('should throw error if old password does not match', async () => {
         const wrongOld = await Password.fromPlainString('Wrong@Password123')
 
-        expect(() =>
-            accountPasswordManager.changePassword(wrongOld, newPassword)
-        ).toThrow(CannotResetPasswordError)
+        expect(() => accountPasswordManager.changePassword(wrongOld, newPassword)).toThrow(
+            CannotResetPasswordError,
+        )
     })
 
     it('should generate a reset token if none exists or is expired', () => {
@@ -79,7 +75,7 @@ describe('Account Password Manager Unit Tests', () => {
         accountPasswordManager.generateResetToken()
 
         expect(() => accountPasswordManager.generateResetToken()).toThrow(
-            CannotGenerateResetTokenError
+            CannotGenerateResetTokenError,
         )
     })
 
@@ -104,9 +100,9 @@ describe('Account Password Manager Unit Tests', () => {
 
         const invalidToken = PasswordResetToken.generateToken()
 
-        expect(() =>
-            accountPasswordManager.resetPassword(newPassword, invalidToken)
-        ).toThrow(CannotResetPasswordError)
+        expect(() => accountPasswordManager.resetPassword(newPassword, invalidToken)).toThrow(
+            CannotResetPasswordError,
+        )
     })
 
     it('should throw error when token is expired', () => {
@@ -122,7 +118,7 @@ describe('Account Password Manager Unit Tests', () => {
         })
 
         expect(() => expiredAccount.resetPassword(newPassword, token)).toThrow(
-            CannotResetPasswordError
+            CannotResetPasswordError,
         )
     })
 })

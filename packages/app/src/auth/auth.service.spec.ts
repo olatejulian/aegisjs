@@ -1,13 +1,9 @@
-import {ConfigService} from '@nestjs/config'
-import {JwtService} from '@nestjs/jwt'
-import {Test, TestingModule} from '@nestjs/testing'
-import {AuthConfigWrapper} from './auth-config.wrapper'
-import {AuthService} from './auth.service'
-import {
-    AccessTokenService,
-    RefreshTokenCacheService,
-    RefreshTokenService,
-} from './token'
+import { ConfigService } from '@nestjs/config'
+import { JwtService } from '@nestjs/jwt'
+import { Test, TestingModule } from '@nestjs/testing'
+import { AuthConfigWrapper } from './auth-config.wrapper'
+import { AuthService } from './auth.service'
+import { AccessTokenService, RefreshTokenCacheService, RefreshTokenService } from './token'
 
 describe('AuthService', () => {
     let service: AuthService

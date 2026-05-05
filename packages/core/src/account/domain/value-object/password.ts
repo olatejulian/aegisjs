@@ -46,10 +46,7 @@ class PlainPassword {
     }
 
     public async hash(): Promise<HashedPassword> {
-        const hashedPassword = await bcrypt.hash(
-            this.password,
-            PlainPassword.SALT_ROUNDS
-        )
+        const hashedPassword = await bcrypt.hash(this.password, PlainPassword.SALT_ROUNDS)
 
         return HashedPassword.fromHashedString(hashedPassword)
     }
@@ -73,7 +70,7 @@ class PlainPassword {
 class HashedPassword {
     private static readonly BCRYPT_HASH_REGEX = new RegExp(
         /^\$2[aby]?\$\d{2}\$[./A-Za-z0-9]{53}$/,
-        'u'
+        'u',
     )
 
     private constructor(private readonly password: string) {}
@@ -93,7 +90,6 @@ class HashedPassword {
     }
 
     private static validate(password: string): void {
-        if (!HashedPassword.BCRYPT_HASH_REGEX.test(password))
-            throw new InvalidPasswordError()
+        if (!HashedPassword.BCRYPT_HASH_REGEX.test(password)) throw new InvalidPasswordError()
     }
 }

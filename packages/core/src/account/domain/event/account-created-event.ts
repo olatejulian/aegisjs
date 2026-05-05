@@ -1,9 +1,5 @@
-import {DomainEvent} from '@core/shared'
-import {
-    AccountName,
-    EmailAddress,
-    EmailVerificationToken,
-} from '../value-object'
+import { DomainEvent } from '@core/shared'
+import { AccountName, EmailAddress, EmailVerificationToken } from '../value-object'
 
 export interface AccountCreatedEventPayload {
     name: AccountName

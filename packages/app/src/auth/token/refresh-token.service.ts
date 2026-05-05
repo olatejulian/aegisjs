@@ -1,6 +1,6 @@
-import {JwtService} from '@nestjs/jwt'
-import {EmailAddress} from '@ts-api-example/core'
-import {AuthConfigWrapper} from '../auth-config.wrapper'
+import { JwtService } from '@nestjs/jwt'
+import { EmailAddress } from '@ts-api-example/core'
+import { AuthConfigWrapper } from '../auth-config.wrapper'
 
 export class RefreshTokenService {
     private static readonly AUDIENCE = 'urn:auth:web:refresh'
@@ -9,7 +9,7 @@ export class RefreshTokenService {
 
     constructor(
         private readonly jwtService: JwtService,
-        private readonly authConfig: AuthConfigWrapper
+        private readonly authConfig: AuthConfigWrapper,
     ) {}
 
     public async generate(emailAddress: EmailAddress): Promise<string> {
@@ -25,20 +25,17 @@ export class RefreshTokenService {
                 audience: RefreshTokenService.AUDIENCE,
                 issuer: RefreshTokenService.ISSUER,
                 expiresIn: expiresIn,
-            }
+            },
         )
 
         return refreshToken
     }
 
     public async getEmailAddress(refreshToken: string): Promise<EmailAddress> {
-        const payload = await this.jwtService.verifyAsync<{sub: string}>(
-            refreshToken,
-            {
-                audience: RefreshTokenService.AUDIENCE,
-                issuer: RefreshTokenService.ISSUER,
-            }
-        )
+        const payload = await this.jwtService.verifyAsync<{ sub: string }>(refreshToken, {
+            audience: RefreshTokenService.AUDIENCE,
+            issuer: RefreshTokenService.ISSUER,
+        })
 
         const emailAddress = EmailAddress.create(payload.sub)
 

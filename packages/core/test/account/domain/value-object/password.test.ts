@@ -1,4 +1,4 @@
-import {InvalidPasswordError, Password} from '@core/account'
+import { InvalidPasswordError, Password } from '@core/account'
 
 describe('Password Unit Tests', () => {
     it('should be able to create a valid password', async () => {

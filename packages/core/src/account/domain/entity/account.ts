@@ -1,5 +1,5 @@
-import {AggregateRoot} from '@core/shared'
-import {AccountCreatedEvent} from '../event'
+import { AggregateRoot } from '@core/shared'
+import { AccountCreatedEvent } from '../event'
 import {
     AccountId,
     AccountName,
@@ -8,8 +8,8 @@ import {
     Password,
     PasswordResetToken,
 } from '../value-object'
-import {AccountEmailManager} from './account-email-manager'
-import {AccountPasswordManager} from './account-password-manager'
+import { AccountEmailManager } from './account-email-manager'
+import { AccountPasswordManager } from './account-password-manager'
 
 export class WrongEmailAddressOrPasswordError extends Error {}
 
@@ -29,7 +29,7 @@ export class Account extends AggregateRoot {
         private readonly accountEmailManager: AccountEmailManager,
         private readonly accountPasswordManager: AccountPasswordManager,
         private readonly accountCreatedAt: Date,
-        private accountUpdatedAt?: Date
+        private accountUpdatedAt?: Date,
     ) {
         super()
     }
@@ -37,7 +37,7 @@ export class Account extends AggregateRoot {
     public static create(
         name: AccountName,
         email: AccountEmailManager,
-        password: AccountPasswordManager
+        password: AccountPasswordManager,
     ) {
         const id = AccountId.generate()
 
@@ -49,8 +49,7 @@ export class Account extends AggregateRoot {
 
         const emailAddress = account.getEmailAddress()
 
-        const emailVerificationToken =
-            account.generateEmailAddressVerificationToken()
+        const emailVerificationToken = account.generateEmailAddressVerificationToken()
 
         const accountCreatedEvent = new AccountCreatedEvent({
             name: accountName,
@@ -64,7 +63,7 @@ export class Account extends AggregateRoot {
     }
 
     public static recreate(props: AccountProperties) {
-        const {id, name, email, password, createdAt, updatedAt} = props
+        const { id, name, email, password, createdAt, updatedAt } = props
 
         return new Account(id, name, email, password, createdAt, updatedAt)
     }
@@ -132,10 +131,7 @@ export class Account extends AggregateRoot {
         return token
     }
 
-    public resetPassword(
-        newPassword: Password,
-        token: PasswordResetToken
-    ): void {
+    public resetPassword(newPassword: Password, token: PasswordResetToken): void {
         this.accountPasswordManager.resetPassword(newPassword, token)
 
         this.accountUpdated()

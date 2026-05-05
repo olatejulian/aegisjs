@@ -1,8 +1,5 @@
-import {
-    EmailVerificationToken,
-    InvalidEmailVerificationTokenError,
-} from '@core/account'
-import {validate} from 'uuid'
+import { EmailVerificationToken, InvalidEmailVerificationTokenError } from '@core/account'
+import { validate } from 'uuid'
 
 describe('Email Verification Token Unit Tests', () => {
     it('Should be able to create a valid email verification token', () => {
@@ -14,9 +11,9 @@ describe('Email Verification Token Unit Tests', () => {
     })
 
     it('Should throw an error when email verification token is invalid', () => {
-        expect(() =>
-            EmailVerificationToken.fromString('invalid-token')
-        ).toThrow(InvalidEmailVerificationTokenError)
+        expect(() => EmailVerificationToken.fromString('invalid-token')).toThrow(
+            InvalidEmailVerificationTokenError,
+        )
     })
 
     it('Should be able to compare with another email verification token', () => {
@@ -25,27 +22,17 @@ describe('Email Verification Token Unit Tests', () => {
         const emailVerificationTokenB = EmailVerificationToken.generateToken()
 
         const emailVerificationTokenC = EmailVerificationToken.fromString(
-            emailVerificationTokenA.toString()
+            emailVerificationTokenA.toString(),
         )
 
-        expect(
-            emailVerificationTokenA.equals(emailVerificationTokenB)
-        ).toBeFalsy()
+        expect(emailVerificationTokenA.equals(emailVerificationTokenB)).toBeFalsy()
 
-        expect(
-            emailVerificationTokenB.equals(emailVerificationTokenA)
-        ).toBeFalsy()
+        expect(emailVerificationTokenB.equals(emailVerificationTokenA)).toBeFalsy()
 
-        expect(
-            emailVerificationTokenA.equals(emailVerificationTokenC)
-        ).toBeTruthy()
+        expect(emailVerificationTokenA.equals(emailVerificationTokenC)).toBeTruthy()
 
-        expect(
-            emailVerificationTokenC.equals(emailVerificationTokenA)
-        ).toBeTruthy()
+        expect(emailVerificationTokenC.equals(emailVerificationTokenA)).toBeTruthy()
 
-        expect(
-            emailVerificationTokenB.equals(emailVerificationTokenC)
-        ).toBeFalsy()
+        expect(emailVerificationTokenB.equals(emailVerificationTokenC)).toBeFalsy()
     })
 })

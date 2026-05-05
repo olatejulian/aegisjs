@@ -1,4 +1,4 @@
-import {EmailAddress} from '@ts-api-example/core'
+import { EmailAddress } from '@ts-api-example/core'
 
 export interface Mail {
     to: EmailAddress

@@ -73,40 +73,26 @@ describe('Account unit tests', () => {
     it('should be able to change the password', async () => {
         const oldPassword = password
 
-        const newPassword = await Password.fromPlainString(
-            'MyNewPassword123!@#'
-        )
+        const newPassword = await Password.fromPlainString('MyNewPassword123!@#')
 
-        expect(
-            account.toObject().password.toObject().password.equals(oldPassword)
-        ).toBeTruthy()
+        expect(account.toObject().password.toObject().password.equals(oldPassword)).toBeTruthy()
 
-        expect(
-            account.toObject().password.toObject().password.equals(newPassword)
-        ).toBeFalsy()
+        expect(account.toObject().password.toObject().password.equals(newPassword)).toBeFalsy()
 
         account.changePassword(oldPassword, newPassword)
 
-        expect(
-            account.toObject().password.toObject().password.equals(oldPassword)
-        ).toBeFalsy()
+        expect(account.toObject().password.toObject().password.equals(oldPassword)).toBeFalsy()
 
-        expect(
-            account.toObject().password.toObject().password.equals(newPassword)
-        ).toBeTruthy()
+        expect(account.toObject().password.toObject().password.equals(newPassword)).toBeTruthy()
     })
 
     it('should be able to generate a password reset token and reset the password', async () => {
-        const newPassword = await Password.fromPlainString(
-            'MyNewPassword123!@#'
-        )
+        const newPassword = await Password.fromPlainString('MyNewPassword123!@#')
 
         const token = account.generatePasswordResetToken()
 
         account.resetPassword(newPassword, token)
 
-        expect(
-            account.toObject().password.toObject().password.equals(newPassword)
-        ).toBeTruthy()
+        expect(account.toObject().password.toObject().password.equals(newPassword)).toBeTruthy()
     })
 })

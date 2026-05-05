@@ -1,28 +1,20 @@
-import {EmailAddress} from '@ts-api-example/core'
+import { EmailAddress } from '@ts-api-example/core'
 import * as cacheManager from 'cache-manager'
-import {createHmac} from 'crypto'
-import {AuthConfigWrapper} from '../auth-config.wrapper'
+import { createHmac } from 'crypto'
+import { AuthConfigWrapper } from '../auth-config.wrapper'
 
 export class RefreshTokenCacheService {
     constructor(
         private readonly authConfig: AuthConfigWrapper,
-        private readonly cacheService: cacheManager.Cache
+        private readonly cacheService: cacheManager.Cache,
     ) {}
 
-    public async saveRefreshToken(
-        refreshToken: string,
-        emailAddress: EmailAddress
-    ) {
+    public async saveRefreshToken(refreshToken: string, emailAddress: EmailAddress) {
         const hashedRefreshToken = this.hashRefreshToken(refreshToken)
 
-        const ttl =
-            60000 * this.authConfig.getRefreshTokenCacheDurationMinutes()
+        const ttl = 60000 * this.authConfig.getRefreshTokenCacheDurationMinutes()
 
-        await this.cacheService.set(
-            hashedRefreshToken,
-            emailAddress.toString(),
-            ttl
-        )
+        await this.cacheService.set(hashedRefreshToken, emailAddress.toString(), ttl)
     }
 
     public async deleteRefreshToken(refreshToken: string): Promise<void> {
@@ -31,13 +23,10 @@ export class RefreshTokenCacheService {
         await this.cacheService.del(hashedRefreshToken)
     }
 
-    public async getEmailAddressFromCache(
-        refreshToken: string
-    ): Promise<EmailAddress> {
+    public async getEmailAddressFromCache(refreshToken: string): Promise<EmailAddress> {
         const hashedRefreshToken = this.hashRefreshToken(refreshToken)
 
-        const emailAddressString =
-            await this.cacheService.get<string>(hashedRefreshToken)
+        const emailAddressString = await this.cacheService.get<string>(hashedRefreshToken)
 
         const emailAddress = EmailAddress.create(emailAddressString)
 

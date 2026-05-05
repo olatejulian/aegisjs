@@ -29,9 +29,7 @@ describe('Account Email Manager Unit Tests', () => {
 
         const token = accountEmailManager.generateVerificationToken()
 
-        expect(() =>
-            accountEmailManager.verifyEmailAddress(token)
-        ).not.toThrow()
+        expect(() => accountEmailManager.verifyEmailAddress(token)).not.toThrow()
 
         expect(accountEmailManager.isEmailAddressVerified()).toBeTruthy()
     })
@@ -44,7 +42,7 @@ describe('Account Email Manager Unit Tests', () => {
         accountEmailManager.verifyEmailAddress(token)
 
         expect(() => accountEmailManager.verifyEmailAddress(token)).toThrow(
-            EmailAlreadyVerifiedError
+            EmailAlreadyVerifiedError,
         )
     })
 
@@ -64,9 +62,7 @@ describe('Account Email Manager Unit Tests', () => {
 
         const expired = AccountEmailManager.recreate(obj)
 
-        expect(() => expired.verifyEmailAddress(token)).toThrow(
-            CantVerifyEmailError
-        )
+        expect(() => expired.verifyEmailAddress(token)).toThrow(CantVerifyEmailError)
     })
 
     it('should throw CantVerifyEmailError on mismatched token', () => {
@@ -78,9 +74,9 @@ describe('Account Email Manager Unit Tests', () => {
 
         expect(token.equals(wrongToken)).toBeFalsy()
 
-        expect(() =>
-            accountEmailManager.verifyEmailAddress(wrongToken)
-        ).toThrow(CantVerifyEmailError)
+        expect(() => accountEmailManager.verifyEmailAddress(wrongToken)).toThrow(
+            CantVerifyEmailError,
+        )
     })
 
     it('should throw AccountEmailCorruptedStateError on invalid state', () => {
@@ -91,9 +87,7 @@ describe('Account Email Manager Unit Tests', () => {
             verifiedAt: new Date(),
         }
 
-        expect(() => AccountEmailManager.recreate(obj)).toThrow(
-            AccountEmailCorruptedStateError
-        )
+        expect(() => AccountEmailManager.recreate(obj)).toThrow(AccountEmailCorruptedStateError)
     })
 
     it('should serialize and deserialize correctly', () => {

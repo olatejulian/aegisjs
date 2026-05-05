@@ -1,4 +1,4 @@
-import {v4 as uuidv4, validate} from 'uuid'
+import { v4 as uuidv4, validate } from 'uuid'
 
 export class InvalidEmailVerificationTokenError extends Error {}
 

@@ -1,4 +1,4 @@
-import {Password, PasswordResetToken} from '../value-object'
+import { Password, PasswordResetToken } from '../value-object'
 
 export class CannotGenerateResetTokenError extends Error {}
 
@@ -20,24 +20,17 @@ export class AccountPasswordManager {
         private password: Password,
         private passwordUpdatedAt?: Date,
         private resetToken?: PasswordResetToken,
-        private tokenExpiresAt?: Date
+        private tokenExpiresAt?: Date,
     ) {}
 
     public static create(password: Password): AccountPasswordManager {
         return new AccountPasswordManager(password)
     }
 
-    public static fromObject(
-        obj: AccountPasswordManagerObject
-    ): AccountPasswordManager {
-        const {password, passwordUpdatedAt, resetToken, tokenExpiresAt} = obj
+    public static fromObject(obj: AccountPasswordManagerObject): AccountPasswordManager {
+        const { password, passwordUpdatedAt, resetToken, tokenExpiresAt } = obj
 
-        return new AccountPasswordManager(
-            password,
-            passwordUpdatedAt,
-            resetToken,
-            tokenExpiresAt
-        )
+        return new AccountPasswordManager(password, passwordUpdatedAt, resetToken, tokenExpiresAt)
     }
 
     public toObject(): AccountPasswordManagerObject {
@@ -67,9 +60,7 @@ export class AccountPasswordManager {
 
         const token = PasswordResetToken.generateToken()
 
-        const expiresAt = new Date(
-            Date.now() + AccountPasswordManager.TOKEN_TIMEOUT
-        )
+        const expiresAt = new Date(Date.now() + AccountPasswordManager.TOKEN_TIMEOUT)
 
         this.resetToken = token
 
@@ -78,14 +69,10 @@ export class AccountPasswordManager {
         return token
     }
 
-    public resetPassword(
-        newPassword: Password,
-        token: PasswordResetToken
-    ): void {
+    public resetPassword(newPassword: Password, token: PasswordResetToken): void {
         const isEqual = this.resetToken && this.resetToken.equals(token)
 
-        const isExpired =
-            this.tokenExpiresAt && this.tokenExpiresAt <= new Date()
+        const isExpired = this.tokenExpiresAt && this.tokenExpiresAt <= new Date()
 
         if (!isEqual || isExpired) throw new CannotResetPasswordError()
 

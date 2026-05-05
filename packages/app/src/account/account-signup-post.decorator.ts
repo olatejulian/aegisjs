@@ -1,17 +1,17 @@
-import {applyDecorators, HttpStatus, Post} from '@nestjs/common'
-import {ApiBody, ApiResponse, ApiTags} from '@nestjs/swagger'
+import { applyDecorators, HttpStatus, Post } from '@nestjs/common'
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger'
 import {
     CreateAccount201Response,
     CreateAccount400Response,
     CreateAccount422Response,
 } from './account.response'
-import {CreateAccountDto} from './dto'
+import { CreateAccountDto } from './dto'
 
 export function AccountSignupPost() {
     return applyDecorators(
         Post('signup'),
         ApiTags('Public Routes'),
-        ApiBody({type: CreateAccountDto}),
+        ApiBody({ type: CreateAccountDto }),
         ApiResponse({
             status: HttpStatus.CREATED,
             description: 'Account created successfully',
@@ -26,6 +26,6 @@ export function AccountSignupPost() {
             status: HttpStatus.UNPROCESSABLE_ENTITY,
             description: 'Schema validation failed',
             type: CreateAccount422Response,
-        })
+        }),
     )
 }

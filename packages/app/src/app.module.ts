@@ -1,13 +1,13 @@
-import {CacheModule} from '@nestjs/cache-manager'
-import {Module} from '@nestjs/common'
-import {ConfigModule} from '@nestjs/config'
-import {EventEmitterModule} from '@nestjs/event-emitter'
-import {AccountModule} from './account/account.module'
-import {AppController} from './app.controller'
-import {AppService} from './app.service'
-import {AuthModule} from './auth'
-import {MailModule} from './mail'
-import {TemplateRendererModule} from './template-renderer/template-renderer.module'
+import { CacheModule } from '@nestjs/cache-manager'
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { EventEmitterModule } from '@nestjs/event-emitter'
+import { AccountModule } from './account/account.module'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { AuthModule } from './auth'
+import { MailModule } from './mail'
+import { TemplateRendererModule } from './template-renderer/template-renderer.module'
 
 @Module({
     imports: [
@@ -20,7 +20,7 @@ import {TemplateRendererModule} from './template-renderer/template-renderer.modu
                 max: 1000,
             }),
         }),
-        ConfigModule.forRoot({isGlobal: true}),
+        ConfigModule.forRoot({ isGlobal: true }),
         EventEmitterModule.forRoot(),
         MailModule,
         TemplateRendererModule,

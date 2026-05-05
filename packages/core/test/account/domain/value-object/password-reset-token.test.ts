@@ -1,5 +1,5 @@
-import {InvalidPasswordResetTokenError, PasswordResetToken} from '@core/account'
-import {validate} from 'uuid'
+import { InvalidPasswordResetTokenError, PasswordResetToken } from '@core/account'
+import { validate } from 'uuid'
 
 describe('Password Reset Token Unit Tests', () => {
     it('Should be able to create a valid password reset token', () => {
@@ -12,7 +12,7 @@ describe('Password Reset Token Unit Tests', () => {
 
     it('Should throw an error when password reset token is invalid', () => {
         expect(() => PasswordResetToken.fromString('invalid-token')).toThrow(
-            InvalidPasswordResetTokenError
+            InvalidPasswordResetTokenError,
         )
     })
 
@@ -21,9 +21,7 @@ describe('Password Reset Token Unit Tests', () => {
 
         const passwordResetTokenB = PasswordResetToken.generateToken()
 
-        const passwordResetTokenC = PasswordResetToken.fromString(
-            passwordResetTokenA.toString()
-        )
+        const passwordResetTokenC = PasswordResetToken.fromString(passwordResetTokenA.toString())
 
         expect(passwordResetTokenA.equals(passwordResetTokenB)).toBeFalsy()
         expect(passwordResetTokenB.equals(passwordResetTokenA)).toBeFalsy()

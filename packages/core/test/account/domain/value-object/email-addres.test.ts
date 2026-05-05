@@ -1,4 +1,4 @@
-import {EmailAddress, InvalidEmailAddressError} from '@core/account'
+import { EmailAddress, InvalidEmailAddressError } from '@core/account'
 
 describe('Email Address Unit Tests', () => {
     it('should create a valid email address', () => {
@@ -14,9 +14,7 @@ describe('Email Address Unit Tests', () => {
     it('should throw an error when email address is invalid', () => {
         const invalidEmailAddress = 'invalid.email.com'
 
-        expect(() => EmailAddress.create(invalidEmailAddress)).toThrow(
-            InvalidEmailAddressError
-        )
+        expect(() => EmailAddress.create(invalidEmailAddress)).toThrow(InvalidEmailAddressError)
     })
 
     it('should be equal when email addresses are the same', () => {

@@ -1,4 +1,4 @@
-import {Account, AccountFactory} from '@core/account'
+import { Account, AccountFactory } from '@core/account'
 
 describe('Account Factory Unit Tests', () => {
     it('should be able to create an account from primitives values', async () => {

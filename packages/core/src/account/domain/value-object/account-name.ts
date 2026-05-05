@@ -26,7 +26,7 @@ export class AccountName {
         return name
             .trim()
             .replace(/\s+/g, ' ')
-            .replace(/\b\w/g, char => char.toUpperCase())
+            .replace(/\b\w/g, (char) => char.toUpperCase())
     }
 
     private static validate(accountName: string): void {
@@ -39,10 +39,7 @@ export class AccountName {
     }
 
     private static mustBeValidLength(accountName: string): boolean {
-        return (
-            accountName.length >= this.MIN_LENGTH &&
-            accountName.length <= this.MAX_LENGTH
-        )
+        return accountName.length >= this.MIN_LENGTH && accountName.length <= this.MAX_LENGTH
     }
 
     private static mustHaveValidCharacters(accountName: string): boolean {

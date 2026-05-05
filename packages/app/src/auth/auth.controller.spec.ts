@@ -1,14 +1,10 @@
-import {ConfigService} from '@nestjs/config'
-import {JwtService} from '@nestjs/jwt'
-import {Test, TestingModule} from '@nestjs/testing'
-import {AuthConfigWrapper} from './auth-config.wrapper'
-import {AuthController} from './auth.controller'
-import {AuthService} from './auth.service'
-import {
-    AccessTokenService,
-    RefreshTokenCacheService,
-    RefreshTokenService,
-} from './token'
+import { ConfigService } from '@nestjs/config'
+import { JwtService } from '@nestjs/jwt'
+import { Test, TestingModule } from '@nestjs/testing'
+import { AuthConfigWrapper } from './auth-config.wrapper'
+import { AuthController } from './auth.controller'
+import { AuthService } from './auth.service'
+import { AccessTokenService, RefreshTokenCacheService, RefreshTokenService } from './token'
 
 describe('AuthController', () => {
     let controller: AuthController

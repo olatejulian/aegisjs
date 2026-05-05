@@ -5,7 +5,7 @@ export abstract class DomainEvent<Payload> {
         private readonly props: {
             eventName: string
             payload: Payload
-        }
+        },
     ) {
         this.eventOccurredAt = new Date()
     }

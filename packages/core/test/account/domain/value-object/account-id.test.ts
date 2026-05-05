@@ -1,4 +1,4 @@
-import {AccountId, InvalidAccountIdError} from '@core/account'
+import { AccountId, InvalidAccountIdError } from '@core/account'
 
 describe('Account Id Unit Tests', () => {
     it('should be able to create a valid account id', () => {
@@ -12,17 +12,13 @@ describe('Account Id Unit Tests', () => {
     it('should throw an error when trying to create an account id with an empty value', () => {
         const AccountIdString = ''
 
-        expect(() => AccountId.fromString(AccountIdString)).toThrow(
-            InvalidAccountIdError
-        )
+        expect(() => AccountId.fromString(AccountIdString)).toThrow(InvalidAccountIdError)
     })
 
     it('should throw an error when trying to create an account id with an invalid value', () => {
         const AccountIdString = 'invalid-value'
 
-        expect(() => AccountId.fromString(AccountIdString)).toThrow(
-            InvalidAccountIdError
-        )
+        expect(() => AccountId.fromString(AccountIdString)).toThrow(InvalidAccountIdError)
     })
 
     it('should be able to compare with another account id', () => {
@@ -42,9 +38,7 @@ describe('Account Id Unit Tests', () => {
 
         const accountId = AccountId.fromString(AccountIdString)
 
-        const anotherAccountId = AccountId.fromString(
-            '123e4567-e89b-12d3-a456-426614174111'
-        )
+        const anotherAccountId = AccountId.fromString('123e4567-e89b-12d3-a456-426614174111')
 
         const areEqual = accountId.equals(anotherAccountId)
 

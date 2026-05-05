@@ -1,4 +1,4 @@
-import {ConfigService} from '@nestjs/config'
+import { ConfigService } from '@nestjs/config'
 
 export class AuthConfigWrapper {
     constructor(private readonly configService: ConfigService) {}
@@ -8,20 +8,14 @@ export class AuthConfigWrapper {
     }
 
     public getAccessTokenDurationMinutes(): number {
-        return this.configService.get<number>(
-            'AUTH_ACCESS_TOKEN_DURATION_MINUTES'
-        )
+        return this.configService.get<number>('AUTH_ACCESS_TOKEN_DURATION_MINUTES')
     }
 
     public getRefreshTokenDurationMinutes(): number {
-        return this.configService.get<number>(
-            'AUTH_REFRESH_TOKEN_DURATION_MINUTES'
-        )
+        return this.configService.get<number>('AUTH_REFRESH_TOKEN_DURATION_MINUTES')
     }
 
     public getRefreshTokenCacheDurationMinutes(): number {
-        return this.configService.get<number>(
-            'AUTH_REFRESH_TOKEN_CACHE_DURATION_MINUTES'
-        )
+        return this.configService.get<number>('AUTH_REFRESH_TOKEN_CACHE_DURATION_MINUTES')
     }
 }

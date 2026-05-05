@@ -1,4 +1,4 @@
-import {EmailAddress, EmailVerificationToken} from '../value-object'
+import { EmailAddress, EmailVerificationToken } from '../value-object'
 
 export class AccountEmailCorruptedStateError extends Error {}
 
@@ -20,7 +20,7 @@ export class AccountEmailManager {
         private readonly emailAddress: EmailAddress,
         private token?: EmailVerificationToken,
         private tokenExpiresAt?: Date,
-        private verifiedAt?: Date
+        private verifiedAt?: Date,
     ) {}
 
     public static create(emailAddress: EmailAddress): AccountEmailManager {
@@ -31,19 +31,12 @@ export class AccountEmailManager {
         return accountEmail
     }
 
-    public static recreate(
-        obj: AccountEmailManagerProperties
-    ): AccountEmailManager {
-        const {emailAddress, verifiedAt, token, tokenExpiresAt} = obj
+    public static recreate(obj: AccountEmailManagerProperties): AccountEmailManager {
+        const { emailAddress, verifiedAt, token, tokenExpiresAt } = obj
 
         AccountEmailManager.validateState(token, tokenExpiresAt, verifiedAt)
 
-        return new AccountEmailManager(
-            emailAddress,
-            token,
-            tokenExpiresAt,
-            verifiedAt
-        )
+        return new AccountEmailManager(emailAddress, token, tokenExpiresAt, verifiedAt)
     }
 
     public toObject(): AccountEmailManagerProperties {
@@ -67,7 +60,7 @@ export class AccountEmailManager {
         const token = EmailVerificationToken.generateToken()
 
         const tokenExpiresAt = new Date(
-            Date.now() + AccountEmailManager.TOKEN_EXPIRATION_TIME_IN_MS
+            Date.now() + AccountEmailManager.TOKEN_EXPIRATION_TIME_IN_MS,
         )
 
         this.setInVerificationState(token, tokenExpiresAt)
@@ -78,8 +71,7 @@ export class AccountEmailManager {
     public verifyEmailAddress(token: EmailVerificationToken): void {
         if (this.isEmailAddressVerified()) throw new EmailAlreadyVerifiedError()
 
-        const isTokenExpired =
-            this.tokenExpiresAt && this.tokenExpiresAt.getTime() <= Date.now()
+        const isTokenExpired = this.tokenExpiresAt && this.tokenExpiresAt.getTime() <= Date.now()
 
         const isTheSameToken = this.token && this.token.equals(token)
 
@@ -93,7 +85,7 @@ export class AccountEmailManager {
     private static validateState(
         token: EmailVerificationToken,
         tokenExpiresAt: Date,
-        verifiedAt: Date
+        verifiedAt: Date,
     ): void {
         const initialState = !token && !tokenExpiresAt && !verifiedAt
 
@@ -113,10 +105,7 @@ export class AccountEmailManager {
         this.verifiedAt = null
     }
 
-    private setInVerificationState(
-        token: EmailVerificationToken,
-        tokenExpiresAt: Date
-    ): void {
+    private setInVerificationState(token: EmailVerificationToken, tokenExpiresAt: Date): void {
         if (this.isEmailAddressVerified()) throw new EmailAlreadyVerifiedError()
 
         this.token = token

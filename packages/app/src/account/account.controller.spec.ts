@@ -1,28 +1,22 @@
-import {CacheModule} from '@nestjs/cache-manager'
-import {ConfigModule} from '@nestjs/config'
-import {JwtModule} from '@nestjs/jwt'
-import {Test, TestingModule} from '@nestjs/testing'
-import {AccountController} from './account.controller'
-import {AccountService} from './account.service'
-import {InMemoryAccountRepository} from './repository'
+import { CacheModule } from '@nestjs/cache-manager'
+import { ConfigModule } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
+import { Test, TestingModule } from '@nestjs/testing'
+import { AccountController } from './account.controller'
+import { AccountService } from './account.service'
+import { InMemoryAccountRepository } from './repository'
 
 describe('AccountController', () => {
     let controller: AccountController
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            imports: [
-                ConfigModule.forRoot(),
-                JwtModule.register({}),
-                CacheModule.register(),
-            ],
+            imports: [ConfigModule.forRoot(), JwtModule.register({}), CacheModule.register()],
             controllers: [AccountController],
             providers: [
                 {
                     provide: AccountService,
-                    useValue: new AccountService(
-                        new InMemoryAccountRepository()
-                    ),
+                    useValue: new AccountService(new InMemoryAccountRepository()),
                 },
             ],
         }).compile()

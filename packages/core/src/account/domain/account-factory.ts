@@ -1,5 +1,5 @@
-import {Account, AccountEmailManager, AccountPasswordManager} from './entity'
-import {AccountName, EmailAddress, Password} from './value-object'
+import { Account, AccountEmailManager, AccountPasswordManager } from './entity'
+import { AccountName, EmailAddress, Password } from './value-object'
 
 export class AccountFactory {
     public static async createAccount(props: {
@@ -23,11 +23,7 @@ export class AccountFactory {
 
         const accountPasswordManager = AccountPasswordManager.create(password)
 
-        const account = Account.create(
-            accountName,
-            accountEmailManager,
-            accountPasswordManager
-        )
+        const account = Account.create(accountName, accountEmailManager, accountPasswordManager)
 
         return account
     }

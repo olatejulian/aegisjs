@@ -1,11 +1,6 @@
-import {
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    UnauthorizedException,
-} from '@nestjs/common'
-import {Request} from 'express'
-import {AuthService} from '../auth.service'
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
+import { Request } from 'express'
+import { AuthService } from '../auth.service'
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -18,18 +13,14 @@ export class JwtAuthGuard implements CanActivate {
 
         const bearerString = 'Bearer '
 
-        if (!(authHeader && authHeader.startsWith(bearerString)))
-            throw new UnauthorizedException()
+        if (!(authHeader && authHeader.startsWith(bearerString))) throw new UnauthorizedException()
 
         const accessToken = authHeader.replace(bearerString, '').trim()
 
         try {
-            const emailAddress =
-                await this.authService.getEmailAddressFromAccessToken(
-                    accessToken
-                )
+            const emailAddress = await this.authService.getEmailAddressFromAccessToken(accessToken)
 
-            request['user'] = {emailAddress: emailAddress}
+            request['user'] = { emailAddress: emailAddress }
         } catch (e) {
             throw new UnauthorizedException(e)
         }

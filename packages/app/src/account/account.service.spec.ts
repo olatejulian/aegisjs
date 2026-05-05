@@ -1,7 +1,7 @@
-import {Test, TestingModule} from '@nestjs/testing'
-import {AccountService} from './account.service'
-import {CreateAccountDto} from './dto'
-import {InMemoryAccountRepository} from './repository'
+import { Test, TestingModule } from '@nestjs/testing'
+import { AccountService } from './account.service'
+import { CreateAccountDto } from './dto'
+import { InMemoryAccountRepository } from './repository'
 
 describe('Account Service Test Suite', () => {
     let service: AccountService
@@ -11,9 +11,7 @@ describe('Account Service Test Suite', () => {
             providers: [
                 {
                     provide: AccountService,
-                    useValue: new AccountService(
-                        new InMemoryAccountRepository()
-                    ),
+                    useValue: new AccountService(new InMemoryAccountRepository()),
                 },
             ],
         }).compile()

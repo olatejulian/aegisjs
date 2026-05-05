@@ -1,5 +1,5 @@
-import {Account} from './entity'
-import {AccountId, EmailAddress} from './value-object'
+import { Account } from './entity'
+import { AccountId, EmailAddress } from './value-object'
 
 export interface AccountRepository {
     save(account: Account): Promise<void>
