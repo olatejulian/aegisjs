@@ -43,8 +43,8 @@
   "private": true,
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "lint": "eslint \"{src,test}/**/*.ts\" --ext ts --fix",
+    "format": "biome format --write .",
+    "lint": "biome check --write .",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:dev": "nest start ./dist/packages/app/src/main --watch",
@@ -52,7 +52,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": " vitest run --config ./test/jest-e2e.json",
+    "test:e2e": "vitest run --config ./test/jest-e2e.json",
     "test:watch": "vitest"
   },
   "version": "0.0.1"
