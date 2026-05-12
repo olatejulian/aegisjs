@@ -1,12 +1,20 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.5/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/.turbo",
+      "!**/coverage",
+      "!**/dist",
+      "!**/lib",
+      "!**/node_modules"
+    ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
-    "indentWidth": 4,
+    "indentWidth": 2,
     "lineEnding": "lf",
     "lineWidth": 100
   },
@@ -17,19 +25,12 @@
       "quoteStyle": "single",
       "semicolons": "asNeeded",
       "trailingCommas": "all"
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
     }
   },
   "linter": {
-    "enabled": true,
-    "rules": {
-      "correctness": {
-        "noUndeclaredVariables": "off",
-        "noUnusedVariables": "warn"
-      },
-      "recommended": true,
-      "style": {
-        "useImportType": "warn"
-      }
-    }
+    "enabled": true
   }
 }
