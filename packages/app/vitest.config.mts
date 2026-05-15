@@ -5,12 +5,12 @@ export default mergeConfig(
   base,
   defineConfig({
     test: {
-      name: 'core',
+      name: 'app',
 
-      include: ['./test/**'],
+      include: ['./src/**/*.spec.ts', './test/**/*.spec.ts'],
 
       coverage: {
-        reportsDirectory: '../../coverage/core',
+        reportsDirectory: '../../coverage/app',
       },
     },
   }),

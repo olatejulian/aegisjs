@@ -10,7 +10,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.19",
     "@nestjs/swagger": "^11.4.2",
-    "@ts-api-example/core": "workspace:*",
+    "@aegisjs/core": "workspace:*",
     "cache-manager": "^7.2.8",
     "cache-manager-redis-store": "^3.0.1",
     "cookie-parser": "^1.4.7",
@@ -39,7 +39,7 @@
     "tsconfig-paths": "^4.2.0",
     "vitest": "^4.1.5"
   },
-  "name": "@ts-api-example/app",
+  "name": "@aegisjs/app",
   "private": true,
   "scripts": {
     "build": "nest build",

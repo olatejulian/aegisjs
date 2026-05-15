@@ -3,9 +3,6 @@
     "outDir": "./lib",
     "rootDir": "./src"
   },
-  "exclude": [
-    "./vitest.config.ts",
-    "./test"
-  ],
+  "exclude": ["./vitest.config.ts", "./test"],
   "extends": "./tsconfig.json"
 }

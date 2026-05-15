@@ -2,16 +2,10 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "paths": {
-      "@core/*": [
-        "./src/*"
-      ]
+      "@core/*": ["./src/*"]
     }
   },
-  "exclude": [
-    "./lib",
-  ],
+  "exclude": ["./lib"],
   "extends": "../../tsconfig.json",
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }

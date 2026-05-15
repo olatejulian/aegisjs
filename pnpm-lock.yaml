@@ -62,7 +62,7 @@ importers:
       '@nestjs/swagger':
         specifier: ^11.4.2
         version: 11.4.2(@nestjs/common@11.1.19(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)
-      '@ts-api-example/core':
+      '@aegisjs/core':
         specifier: workspace:*
         version: link:../core
       cache-manager:

@@ -11,12 +11,12 @@
     "vitest": "^4.1.6"
   },
   "license": "MIT",
-  "name": "ts-api-example",
+  "name": "aegisjs",
   "packageManager": "pnpm@10.13.1",
   "private": true,
   "scripts": {
-    "@app": "pnpm --filter @ts-api-example/app",
-    "@core": "pnpm --filter @ts-api-example/core",
+    "@app": "pnpm --filter @aegisjs/app",
+    "@core": "pnpm --filter @aegisjs/core",
     "build": "turbo run build",
     "format": "turbo run format",
     "lint": "turbo run lint",

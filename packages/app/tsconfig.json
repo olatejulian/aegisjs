@@ -12,9 +12,7 @@
     "noImplicitAny": false,
     "outDir": "./dist",
     "paths": {
-      "@app/*": [
-        "./src/*"
-      ]
+      "@app/*": ["./src/*"]
     },
     "removeComments": true,
     "skipLibCheck": true,
@@ -23,12 +21,7 @@
     "strictNullChecks": false,
     "target": "ES2021"
   },
-  "exclude": [
-    "./dist",
-    "./node_modules"
-  ],
+  "exclude": ["./dist", "./node_modules"],
   "extends": "../../tsconfig.json",
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }

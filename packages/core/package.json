@@ -15,7 +15,7 @@
     "require": "./lib/index.cjs"
   },
   "main": "./lib/index.js",
-  "name": "@ts-api-example/core",
+  "name": "@aegisjs/core",
   "scripts": {
     "build": "tsup ./src/index.ts --dts --format esm,cjs --out-dir ./lib --tsconfig tsconfig.build.json",
     "build:watch": "pnpm build --watch",
